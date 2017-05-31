@@ -1,6 +1,10 @@
 package com.ml.model.posicionamiento.polar;
 
+import java.util.List;
+
+import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
+import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
 public class CalculadorPosicionPolar implements CalculadorPosicion<CoordenadaPolar> {
 
@@ -18,6 +22,21 @@ public class CalculadorPosicionPolar implements CalculadorPosicion<CoordenadaPol
     @Override
     public CoordenadaPolar crearCoordenada(final int x, final int y) {
         return new CoordenadaPolar(x, y);
+    }
+
+    @Override
+    public boolean estanAlineadosConElSol(final List<Planeta> planetas, final CoordenadaBidimensional coordenadasSol) {
+        throw new UnsupportedOperationException("No implementado");
+    }
+
+    @Override
+    public boolean estanAlineados(final List<Planeta> planetas) {
+        throw new UnsupportedOperationException("No implementado");
+    }
+
+    @Override
+    public boolean distribucionPlanetasContieneSol(List<Planeta> planetas, CoordenadaBidimensional coordenadasSol) {
+        throw new UnsupportedOperationException("No implementado");
     }
 
     // distancia polar

@@ -7,29 +7,33 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
+import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 import com.ml.model.posicionamiento.common.EstrategiaPosicionamiento;
 
 public class Galaxia {
 
     private final List<Planeta> planetas;
-    private final Sol sol;
     private final CalculadorPosicion<?> calculadorPosicion;
     private final Map<EventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
-    private double perimetroMaximo = Double.MIN_VALUE;
-    private int diaPeriodoMaximo = 0;
+    private final CoordenadaBidimensional coordenadasSol;
 
+    private double perimetroMaximo = Double.MIN_VALUE;
+
+    private int diaPeriodoMaximo = 0;
     private int diaActual = 0;
 
     public Galaxia(final EstrategiaPosicionamiento<?, ?> estrategiaRectangular) {
         calculadorPosicion = estrategiaRectangular.getCalculadorPosicion();
+        // igual en coordenadas rectangulares y polares
+        coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
         planetas = new ArrayList<>();
-        sol = new Sol(calculadorPosicion.crearCoordenada(0, 0));
         Stream.of(EventoGalaxia.values()).forEach(e -> mapEventoCantidad.put(e, 0));
     }
 
-    public void addPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
-            final int x, final int y) {
-        planetas.add(new Planeta(nombre, velocidadAngular, distanciaAlSol, horaria, calculadorPosicion.crearCoordenada(x, y)));
+    public void addPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol,
+                    final boolean horaria, final int x, final int y) {
+        planetas.add(new Planeta(nombre, velocidadAngular, distanciaAlSol, horaria,
+                        calculadorPosicion.crearCoordenada(x, y)));
     }
 
     public void simularHasta(final int cantidadDias) {
@@ -40,20 +44,23 @@ public class Galaxia {
 
     private void incrementarDia() {
         diaActual++;
-        planetas.forEach(
-                p -> p.setPosicion(calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(), p.getDistanciaAlSol())));
-
-        calcularEventos();
+        actualizarPosiciones();
+        actualizarEventos();
     }
 
-    private void calcularEventos() {
+    private void actualizarPosiciones() {
+        planetas.forEach(p -> p.setPosicion(calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(),
+                        p.getDistanciaAlSol())));
+    }
+
+    private void actualizarEventos() {
         // Eventos:
         // 1) Alineados incluido sol
         // 2) Forman triangulo incluido sol
         // 2.1) Determinar maximo perimetro
         // 3) Alineados sin incluir sol
         Stream.of(EventoGalaxia.values()).forEach(evento -> {
-            if (evento.aplica(this)) {
+            if (evento.aplica(this, calculadorPosicion)) {
                 evento.computar(this);
                 // mapEventoCantidad.compute(evento, (k, v) -> v + 1);
             }
@@ -64,7 +71,7 @@ public class Galaxia {
         // } else {
         // Evento3
         // }
-        // } else if(forman triangulo && incluidoSol) {
+        // } else if(incluidoSol) {
         // Evento 2
         // calcular permimetro, comparar con el maximo
         // }
@@ -96,13 +103,6 @@ public class Galaxia {
     }
 
     /**
-     * @return the sol
-     */
-    public final Sol getSol() {
-        return sol;
-    }
-
-    /**
      * @return the mapEventoCantidad
      */
     public final Map<EventoGalaxia, Integer> getMapEventoCantidad() {
@@ -125,5 +125,9 @@ public class Galaxia {
      */
     public final int getDiaPeriodoMaximo() {
         return diaPeriodoMaximo;
+    }
+
+    public CoordenadaBidimensional getCoordenadasSol() {
+        return coordenadasSol;
     }
 }

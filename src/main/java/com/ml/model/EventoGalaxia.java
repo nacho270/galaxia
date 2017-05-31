@@ -4,6 +4,7 @@ import com.ml.model.eventos.AccionCOPT;
 import com.ml.model.eventos.AccionEventoGalaxia;
 import com.ml.model.eventos.AccionPeriodoLluvia;
 import com.ml.model.eventos.AccionPeriodoSequia;
+import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 public enum EventoGalaxia {
     PERIODO_SEQUIA(new AccionPeriodoSequia()), //
@@ -16,8 +17,8 @@ public enum EventoGalaxia {
 
     private final AccionEventoGalaxia accionEvento;
 
-    public boolean aplica(final Galaxia galaxia) {
-        return accionEvento.aplica(galaxia);
+    public boolean aplica(final Galaxia galaxia, CalculadorPosicion<?> calculadorPosicion) {
+        return accionEvento.aplica(galaxia, calculadorPosicion);
     }
 
     public void computar(final Galaxia galaxia) {

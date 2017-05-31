@@ -9,7 +9,6 @@ public class Main {
 
     public static void main(final String[] args) {
         final Galaxia galaxia = new Galaxia(new EstrategiaRectangular());
-        galaxia.addPlaneta("SOL", (short) 0, 0, true, 0, 0);
         galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
         galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
         galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
