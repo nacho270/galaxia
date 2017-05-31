@@ -6,7 +6,10 @@ public class CalculadorPosicionRectangular implements CalculadorPosicion<Coorden
 
     @Override
     public CoordenadaRectangular calcularPosicion(final int dia, final short velocidadAngular, final int distanciaAlSol) {
-        final int distanciaRecorrida = (dia * velocidadAngular);
+        int distanciaRecorrida = (dia * velocidadAngular);
+        if (distanciaRecorrida < 0) {
+            distanciaRecorrida = 360 - Math.abs(distanciaRecorrida % 360);
+        }
         // final int vueltas = distanciaRecorrida / 360;
         final int angulo = distanciaRecorrida % 360;
         return new CoordenadaRectangular(distanciaAlSol * Math.cos(angulo), distanciaAlSol * Math.sin(angulo));
@@ -16,5 +19,4 @@ public class CalculadorPosicionRectangular implements CalculadorPosicion<Coorden
     public CoordenadaRectangular crearCoordenada(final int x, final int y) {
         return new CoordenadaRectangular(x, y);
     }
-
 }

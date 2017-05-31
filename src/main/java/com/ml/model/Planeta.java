@@ -14,7 +14,7 @@ public class Planeta {
             final CoordenadaBidimensional posicionInicial) {
         this.nombre = nombre;
         this.distanciaAlSol = distanciaAlSol;
-        this.velocidadAngular = (short) ((horaria ? 1 : -1) * velocidadAngular);
+        this.velocidadAngular = (short) ((horaria ? -1 : 1) * velocidadAngular);
         posicion = posicionInicial;
     }
 
