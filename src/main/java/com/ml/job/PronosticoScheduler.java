@@ -11,6 +11,9 @@ import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 import com.ml.repository.EventoGalaxiaRepository;
 import com.ml.service.GalaxiaService;
 
+/**
+ * Job que corre cuando se inicia la aplicacion.
+ */
 @Component
 public class PronosticoScheduler {
 
@@ -24,13 +27,15 @@ public class PronosticoScheduler {
     @Autowired
     private EventoGalaxiaRepository eventoRepository;
 
-    // corre solo una vez
+    /**
+     * Realiza la carga de la galaxia pedida y simula su comportamiento climatico a 10 años. Corre solo una vez.
+     */
     @Scheduled(fixedDelay = Long.MAX_VALUE)
-    public void iniciarDatosYHacerPronostico() {
+    public final void iniciarDatosYHacerPronostico() {
         final Galaxia galaxia = new Galaxia(new EstrategiaCartesiana());
-        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
-        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
-        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
+        galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
+        galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
+        galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
         service.save(galaxia);
 
         LOGGER.info("BORRANDO EVENTOS");

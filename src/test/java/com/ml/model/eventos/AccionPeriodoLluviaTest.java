@@ -23,7 +23,7 @@ import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
 public class AccionPeriodoLluviaTest {
 
-    private final AccionPeriodoLluvia accionPeriodoLluvia = new AccionPeriodoLluvia();
+    private final HandlerPeriodoLluvia accionPeriodoLluvia = new HandlerPeriodoLluvia();
     private EstrategiaCartesiana estrategiaCartesiana;
     private final CalculadorPosicionCartesiana calculadorCartesiano = mock(CalculadorPosicionCartesiana.class);
     private Galaxia galaxia;

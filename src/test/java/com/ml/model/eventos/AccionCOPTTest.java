@@ -17,7 +17,7 @@ import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
 public class AccionCOPTTest {
 
-    private final AccionCOPT accionCOPT = new AccionCOPT();
+    private final HandlerCOPT accionCOPT = new HandlerCOPT();
     private EstrategiaCartesiana estrategiaCartesiana;
     private final CalculadorPosicionCartesiana calculadorCartesiano = mock(CalculadorPosicionCartesiana.class);
     private Galaxia galaxia;

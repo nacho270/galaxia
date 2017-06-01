@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
-import com.ml.model.eventos.AccionPeriodoLluvia;
+import com.ml.model.eventos.HandlerPeriodoLluvia;
 import com.ml.model.eventos.TipoEventoGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
@@ -20,7 +20,7 @@ import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
 public class AccionPeriodoLluviaIntegrationTest {
 
-    private final AccionPeriodoLluvia accionPeriodoLluvia = new AccionPeriodoLluvia();
+    private final HandlerPeriodoLluvia accionPeriodoLluvia = new HandlerPeriodoLluvia();
     private final Galaxia galaxia = new Galaxia(new EstrategiaCartesiana());
 
     @Before

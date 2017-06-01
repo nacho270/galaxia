@@ -12,6 +12,9 @@ import org.hibernate.annotations.Target;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
+/**
+ * Almacena los datos de un planeta.
+ */
 @Entity
 @Table(name = "PLANETA")
 public class Planeta {
@@ -22,10 +25,27 @@ public class Planeta {
     private int distanciaAlSol;
     private CoordenadaBidimensional posicion;
 
+    /**
+     * Constructor.
+     */
     public Planeta() {
 
     }
 
+    /**
+     * AConstructor.
+     *
+     * @param nombre
+     *            {@link String} El nombre del planeta.
+     * @param velocidadAngular
+     *            {@link Short} La velocidad angular del planeta.
+     * @param distanciaAlSol
+     *            {@link Integer} La distancia al sol del planeta.
+     * @param horaria
+     *            {@link Boolean} Si el planeta se mueve en sentido horario o no.
+     * @param posicionInicial
+     *            {@link CoordenadaBidimensional} La ubicacion inicial del planeta.
+     */
     public Planeta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
             final CoordenadaBidimensional posicionInicial) {
         this.nombre = nombre;
@@ -116,7 +136,14 @@ public class Planeta {
         this.distanciaAlSol = distanciaAlSol;
     }
 
+    /**
+     * Calcula la distancia de un planeta a otro.
+     *
+     * @param planeta
+     *            {@link Planeta} El planeta para el que se quiere calcular la distancia.
+     * @return {@link Double} La distancia entre este planeta y el solicitado.
+     */
     public double distancia(final Planeta planeta) {
-        return getPosicion().distancia(planeta);
+        return getPosicion().distancia(planeta.getPosicion());
     }
 }

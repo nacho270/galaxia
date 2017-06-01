@@ -1,55 +1,49 @@
 package com.ml.model.posicionamiento.cartesiano;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
+/**
+ * Implementacion cartediana de una {@link CoordenadaBidimensional}.
+ */
 @Embeddable
-public class CoordenadaCartesiana implements CoordenadaBidimensional {
+public class CoordenadaCartesiana extends CoordenadaBidimensional {
 
-    private Double x;
-    private Double y;
-
+    /**
+     * Constructor.
+     */
     public CoordenadaCartesiana() {
-
+        super();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param x
+     *            {@link Double} Coordenada X.
+     * @param y
+     *            {@link Double} Coordenada Y.
+     */
     public CoordenadaCartesiana(final double x, final double y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
     }
 
+    /**
+     * Calcula la distancia de esta coordenada hacia otra mediante el teoroma de pitagoras.
+     *
+     * @param coordenadaBidimensional
+     *            {@link CoordenadaBidimensional} La coordenada hacia donde se quiere calcular la distancia.
+     * @return {@link Double} La distancia entre este planeta y el solicitado.
+     */
     @Override
-    @Column(name = "X", nullable = false)
-    public Double getX() {
-        return x;
-    }
-
-    @Override
-    @Column(name = "Y", nullable = false)
-    public Double getY() {
-        return y;
-    }
-
-    @Override
-    public double distancia(final Planeta planeta) {
-        return Math.sqrt(Math.pow(planeta.getPosicion().getX() - getX(), 2) + Math.pow(planeta.getPosicion().getY() - getY(), 2));
+    public double distancia(final CoordenadaBidimensional coordenadaBidimensional) {
+        return Math
+                .sqrt(Math.pow(coordenadaBidimensional.getX() - getX(), 2) + Math.pow(coordenadaBidimensional.getY() - getY(), 2));
     }
 
     @Override
     public String toString() {
-        return "(x = " + x + ", y = " + y + ")";
-    }
-
-    @Override
-    public void setX(final Double x) {
-        this.x = x;
-    }
-
-    @Override
-    public void setY(final Double y) {
-        this.y = y;
+        return "(x = " + getX() + ", y = " + getY() + ")";
     }
 }

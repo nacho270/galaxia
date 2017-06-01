@@ -10,6 +10,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Modela una evento de la galaxia mediante un tipo y el dia en el que ocurrio.
+ */
 @Entity
 @Table(name = "EVENTO", indexes = { @Index(name = "IX_DIA", columnList = "dia") })
 public class EventoGalaxia {
@@ -19,10 +22,21 @@ public class EventoGalaxia {
     private TipoEventoGalaxia tipoEvento;
     private Integer dia;
 
+    /**
+     * Constructor.
+     */
     public EventoGalaxia() {
 
     }
 
+    /**
+     * Constructor.
+     *
+     * @param tipoEvento
+     *            {@link TipoEventoGalaxia} El tipo de evento.
+     * @param dia
+     *            {@link Integer} El dia en el que ocurre el evento.
+     */
     public EventoGalaxia(final TipoEventoGalaxia tipoEvento, final Integer dia) {
         this.tipoEvento = tipoEvento;
         this.dia = dia;

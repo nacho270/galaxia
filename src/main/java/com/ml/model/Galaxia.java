@@ -32,6 +32,10 @@ import com.ml.model.posicionamiento.common.CalculadorPosicion;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 import com.ml.model.posicionamiento.common.EstrategiaPosicionamiento;
 
+/**
+ * Almacena la configuracion de una galaxia teniendo en el punto (0,0) al sol y almacenando la cuenta de tipo de eventos,
+ * y los eventos en si, durante la simulacion.
+ */
 @Entity
 @Table(name = "GALAXIA")
 public class Galaxia {
@@ -48,10 +52,19 @@ public class Galaxia {
     private final Map<TipoEventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
     private static final EventosChain EVENTOS_CHAIN = new EventosChain();
 
+    /**
+     * Constructor.
+     */
     public Galaxia() {
         this(new EstrategiaCartesiana());
     }
 
+    /**
+     * Constructor.
+     *
+     * @param estrategia
+     *            {@link EstrategiaPosicionamiento} La estrategia de posicionamiento a utlizar.
+     */
     public Galaxia(final EstrategiaPosicionamiento<?, ?> estrategia) {
         planetas = new ArrayList<>();
         eventos = new ArrayList<>();
@@ -173,28 +186,59 @@ public class Galaxia {
         this.calculadorPosicion = calculadorPosicion;
     }
 
-    public void addPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
+    /**
+     * Agrega un planeta a la galaxia.
+     *
+     * @param nombre
+     *            {@link String} El nombre del planeta.
+     * @param velocidadAngular
+     *            {@link Short} La velocidad angular del planeta.
+     * @param distanciaAlSol
+     *            {@link Integer} La distancia al sol del planeta.
+     * @param horaria
+     *            {@link Boolean} Si el planeta se mueve en sentido horario o no.
+     * @param x
+     *            {@link Integer} Coordenada X.
+     * @param y
+     *            {@link Integer} Coordenada Y.
+     */
+    public void agregarPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
             final int x, final int y) {
         planetas.add(new Planeta(nombre, velocidadAngular, distanciaAlSol, horaria, calculadorPosicion.crearCoordenada(x, y)));
     }
 
+    /**
+     * Simula el comportamiento de la galaxia durante un determinado numero de dias.
+     *
+     * @param cantidadDias
+     *            {@link Integer} La cantidad de dias a simular.
+     */
     public void simularHasta(final int cantidadDias) {
         for (int i = 0; i < cantidadDias; i++) {
             incrementarDia();
         }
     }
 
+    /**
+     * Incrementa un dia en la galaxia, reubica los planetas y determina los eventos para la nueva posicion.
+     */
     private void incrementarDia() {
         diaActual++;
         actualizarPosiciones();
         actualizarEventos();
     }
 
+    /**
+     * Reubica los planetas.
+     */
     protected void actualizarPosiciones() {
         planetas.forEach(
                 p -> p.setPosicion(calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(), p.getDistanciaAlSol())));
     }
 
+    /**
+     * Determina los eventos para la nueva posicion.
+     */
     private void actualizarEventos() {
         // Eventos:
         // 1) Alineados incluido sol
@@ -205,11 +249,23 @@ public class Galaxia {
         EVENTOS_CHAIN.ejecutar(this, calculadorPosicion);
     }
 
+    /**
+     * Almacena un nuevo evento ocurrido en la galaxia: Suma su ocurrencia y lo agrega a la lista de eventos.
+     *
+     * @param tipoEvento
+     *            {@link TipoEventoGalaxia} El tipo de evento ocurrido.
+     */
     public void sumarEvento(final TipoEventoGalaxia tipoEvento) {
         mapEventoCantidad.computeIfPresent(tipoEvento, (k, v) -> v + 1);
         eventos.add(new EventoGalaxia(tipoEvento, diaActual));
     }
 
+    /**
+     * Guarda un nuevo perimetro si es mayor al ultimo guardado y actualiza el dia en el que ocurrio.
+     *
+     * @param perimetro
+     *            {@link Double} El perimetro a computar.
+     */
     public void computarPerimetro(final double perimetro) {
         if (perimetro > perimetroMaximo) {
             perimetroMaximo = perimetro;
@@ -217,7 +273,13 @@ public class Galaxia {
         }
     }
 
-    // solo para test
+    /**
+     * SOLO PARA TEST. Busca un planeta por nombre.
+     *
+     * @param nombre
+     *            {@link String} El nombre del planeta a buscar.
+     * @return {@link Planeta} El planeta requerido.
+     */
     protected Planeta getPlaneta(final String nombre) {
         for (final Planeta p : planetas) {
             if (p.getNombre().equalsIgnoreCase(nombre)) {

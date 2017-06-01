@@ -10,6 +10,9 @@ import com.ml.model.eventos.EventoGalaxia;
 import com.ml.repository.EventoGalaxiaRepository;
 import com.ml.repository.GalaxiaRepository;
 
+/**
+ * Servicio facade para acceder a los datos de la galaxia.
+ */
 @Service
 public class GalaxiaService {
 
@@ -21,11 +24,24 @@ public class GalaxiaService {
     @Autowired
     private EventoGalaxiaRepository eventoRepository;
 
+    /**
+     * Guarda la galaxia en la base de datos.
+     *
+     * @param galaxia
+     *            {@link Galaxia} La galaxia a guardar.
+     */
     public void save(final Galaxia galaxia) {
         LOGGER.info("Grabando galaxia");
         galaxiaRepository.save(galaxia);
     }
 
+    /**
+     * Obtiene el evento ocurrido en un dia en particular.
+     *
+     * @param dia
+     *            {@link Integer} El dia requerido.
+     * @return {@link EventoGalaxia} El evento del dia solicitado.
+     */
     public EventoGalaxia eventoParaDia(final int dia) {
         LOGGER.info("Buscando por dia {}", dia);
         return eventoRepository.findByDia(dia);

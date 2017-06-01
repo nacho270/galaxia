@@ -21,9 +21,9 @@ public class GalaxiaRectangularTest {
 
     @Test
     public void testUnDia() {
-        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
-        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
-        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
+        galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
+        galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
+        galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
 
         galaxia.simularHasta(1);
         assertEquals(1, galaxia.getDiaActual());
@@ -39,9 +39,9 @@ public class GalaxiaRectangularTest {
 
     @Test
     public void testPlanetaRecorridoHorarioMasDeUnaVuelta() {
-        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
-        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
-        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
+        galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
+        galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
+        galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
 
         galaxia.simularHasta(400);
         assertEquals(400, galaxia.getDiaActual());
@@ -53,9 +53,9 @@ public class GalaxiaRectangularTest {
     public void testIncrementarDiaParaGenerarCOPT() {
         doNothing().when(galaxia).actualizarPosiciones();
 
-        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, -500, 350);
-        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, -1000, 350);
-        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, -2000, 350);
+        galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, -500, 350);
+        galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, -1000, 350);
+        galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, -2000, 350);
 
         galaxia.simularHasta(1);
 
@@ -66,9 +66,9 @@ public class GalaxiaRectangularTest {
     public void testIncrementarDiaParaGenerarSequia() {
         doNothing().when(galaxia).actualizarPosiciones();
 
-        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 1, 1);
-        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 2, 2);
-        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 3, 3);
+        galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 1, 1);
+        galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 2, 2);
+        galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 3, 3);
 
         galaxia.simularHasta(1);
 
@@ -79,9 +79,9 @@ public class GalaxiaRectangularTest {
     public void testIncrementarDiaParaGenerarLluvia() {
         doNothing().when(galaxia).actualizarPosiciones();
 
-        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 0, 2);
-        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 0, -2);
-        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 3, 0);
+        galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 0, 2);
+        galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, -2);
+        galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 3, 0);
 
         galaxia.simularHasta(1);
 

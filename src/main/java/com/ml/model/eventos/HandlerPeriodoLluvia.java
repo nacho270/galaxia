@@ -6,8 +6,13 @@ import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
-//2) Forman triangulo incluido sol
-public class AccionPeriodoLluvia extends AccionEventoGalaxia {
+/**
+ * Handler para el evento de "Periodo de lluvia".<br>
+ * Se ejecuta solo si los planetas no se encuentran alineados entre si y el sol se encuentra dentro del poligono formado
+ * por los mismos. <br>
+ * Al ejecutar, computa el perimetro del poligono actual que forma los planetas y se lo notifica a la galaxia.
+ */
+public class HandlerPeriodoLluvia extends HandlerEventoGalaxia {
 
     @Override
     protected boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
@@ -24,6 +29,13 @@ public class AccionPeriodoLluvia extends AccionEventoGalaxia {
         galaxia.computarPerimetro(perimetro(galaxia));
     }
 
+    /**
+     * Calcula el perimetro del poligono formado por los planetas en la galaxia.
+     *
+     * @param galaxia
+     *            {@link Galaxia} La galaxia para calcular el perimetro.
+     * @return {@link Double} El perimetro.
+     */
     protected double perimetro(final Galaxia galaxia) {
         int i = 0;
         double perimetro = 0d;

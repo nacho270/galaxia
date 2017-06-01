@@ -3,7 +3,10 @@ package com.ml.model.eventos;
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
-public class AccionDiaNormal extends AccionEventoGalaxia {
+/**
+ * Handler default para cuando no ocurre ningun evento. Debe estar siempre al final de la cadena.
+ */
+public class HandlerDiaNormal extends HandlerEventoGalaxia {
 
     @Override
     protected boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {

@@ -3,11 +3,11 @@ package com.ml.model.eventos;
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
-// 1) Alineados incluido sol
-public class AccionPeriodoSequia extends AccionEventoGalaxia {
-
-    // determinar si 3 puntos son una recta => Comparacion de pendientes
-    // (x2 - x1) / (x3 - x2) = (y2 - y1) / (y3 - y2)
+/**
+ * Handler para el evento de "Periodo de sequia".<br>
+ * Se ejecuta solo si los planetas se encuentran alineados entre si.
+ */
+public class HandlerPeriodoSequia extends HandlerEventoGalaxia {
 
     @Override
     protected boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
