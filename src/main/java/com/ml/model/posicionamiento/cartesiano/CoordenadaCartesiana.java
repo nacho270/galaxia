@@ -1,11 +1,18 @@
 package com.ml.model.posicionamiento.cartesiano;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
+@Embeddable
 public class CoordenadaCartesiana implements CoordenadaBidimensional {
 
+    @Column(name = "X")
     private final double x;
+
+    @Column(name = "Y")
     private final double y;
 
     public CoordenadaCartesiana(final double x, final double y) {
@@ -24,9 +31,8 @@ public class CoordenadaCartesiana implements CoordenadaBidimensional {
     }
 
     @Override
-    public double distancia(Planeta planeta) {
-        return Math.sqrt(Math.pow(planeta.getPosicion().getX() - this.getX(), 2)
-                        + Math.pow(planeta.getPosicion().getY() - this.getY(), 2));
+    public double distancia(final Planeta planeta) {
+        return Math.sqrt(Math.pow(planeta.getPosicion().getX() - getX(), 2) + Math.pow(planeta.getPosicion().getY() - getY(), 2));
     }
 
     @Override

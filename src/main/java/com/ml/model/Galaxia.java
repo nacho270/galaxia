@@ -6,35 +6,127 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 import com.ml.model.posicionamiento.common.EstrategiaPosicionamiento;
 
+@Entity
+@Table(name = "GALAXIA")
 public class Galaxia {
 
+    @Id
+    @GeneratedValue
+    private short id;
+
+    @OneToMany
+    @JoinColumn(name = "F_GALAXIA_ID")
     private final List<Planeta> planetas;
-    private final CalculadorPosicion<?> calculadorPosicion;
-    private final Map<EventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
+
+    @Transient
+    private CalculadorPosicion<?> calculadorPosicion;
+
+    @Transient
+    final Map<EventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
+
+    @Embedded
     private final CoordenadaBidimensional coordenadasSol;
 
+    @Transient
     private double perimetroMaximo = Double.MIN_VALUE;
 
-    /**
-     * @return the perimetroMaximo
-     */
-    protected double getPerimetroMaximo() {
-        return perimetroMaximo;
-    }
-
+    @Transient
     private int diaPeriodoMaximo = 0;
+
+    @Transient
     private int diaActual = 0;
 
-    public Galaxia(final EstrategiaPosicionamiento<?, ?> estrategiaRectangular) {
-        calculadorPosicion = estrategiaRectangular.getCalculadorPosicion();
+    public Galaxia() {
+        planetas = new ArrayList<>();
+        calculadorPosicion = new CalculadorPosicionCartesiana();
+        coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
+    }
+
+    public Galaxia(final EstrategiaPosicionamiento<?, ?> estrategia) {
+        calculadorPosicion = estrategia.getCalculadorPosicion();
         // igual en coordenadas rectangulares y polares
         coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
         planetas = new ArrayList<>();
         Stream.of(EventoGalaxia.values()).forEach(e -> mapEventoCantidad.put(e, 0));
+    }
+
+    /**
+     * @return the id
+     */
+    public final short getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     *            the id to set
+     */
+    public final void setId(final short id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the planetas
+     */
+    public final List<Planeta> getPlanetas() {
+        return planetas;
+    }
+
+    /**
+     * @return the mapEventoCantidad
+     */
+    public final Map<EventoGalaxia, Integer> getMapEventoCantidad() {
+        return mapEventoCantidad;
+    }
+
+    /**
+     * @return the coordenadasSol
+     */
+    public final CoordenadaBidimensional getCoordenadasSol() {
+        return coordenadasSol;
+    }
+
+    /**
+     * @return the perimetroMaximo
+     */
+    public final double getPerimetroMaximo() {
+        return perimetroMaximo;
+    }
+
+    /**
+     * @return the diaPeriodoMaximo
+     */
+    public final int getDiaPeriodoMaximo() {
+        return diaPeriodoMaximo;
+    }
+
+    /**
+     * @return the diaActual
+     */
+    public final int getDiaActual() {
+        return diaActual;
+    }
+
+    /**
+     * @param calculadorPosicion
+     *            the calculadorPosicion to set
+     */
+    public final void setCalculadorPosicion(final CalculadorPosicion<?> calculadorPosicion) {
+        this.calculadorPosicion = calculadorPosicion;
     }
 
     public void addPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
@@ -72,37 +164,6 @@ public class Galaxia {
         });
     }
 
-    /**
-     * @return the planetas
-     */
-    public final List<Planeta> getPlanetas() {
-        return planetas;
-    }
-
-    /**
-     * @return the diaActual
-     */
-    public final int getDiaActual() {
-        return diaActual;
-    }
-
-    // solo para test
-    protected Planeta getPlaneta(final String nombre) {
-        for (final Planeta p : planetas) {
-            if (p.getNombre().equalsIgnoreCase(nombre)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return the mapEventoCantidad
-     */
-    public final Map<EventoGalaxia, Integer> getMapEventoCantidad() {
-        return mapEventoCantidad;
-    }
-
     public void sumarEvento(final EventoGalaxia periodoLluvia) {
         mapEventoCantidad.compute(periodoLluvia, (k, v) -> v + 1);
     }
@@ -114,14 +175,13 @@ public class Galaxia {
         }
     }
 
-    /**
-     * @return the diaPeriodoMaximo
-     */
-    public final int getDiaPeriodoMaximo() {
-        return diaPeriodoMaximo;
-    }
-
-    public CoordenadaBidimensional getCoordenadasSol() {
-        return coordenadasSol;
+    // solo para test
+    protected Planeta getPlaneta(final String nombre) {
+        for (final Planeta p : planetas) {
+            if (p.getNombre().equalsIgnoreCase(nombre)) {
+                return p;
+            }
+        }
+        return null;
     }
 }
