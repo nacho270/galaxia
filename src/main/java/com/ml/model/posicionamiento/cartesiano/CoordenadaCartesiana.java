@@ -9,11 +9,12 @@ import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 @Embeddable
 public class CoordenadaCartesiana implements CoordenadaBidimensional {
 
-    @Column(name = "X")
-    private final double x;
+    private Double x;
+    private Double y;
 
-    @Column(name = "Y")
-    private final double y;
+    public CoordenadaCartesiana() {
+
+    }
 
     public CoordenadaCartesiana(final double x, final double y) {
         this.x = x;
@@ -21,12 +22,14 @@ public class CoordenadaCartesiana implements CoordenadaBidimensional {
     }
 
     @Override
-    public double getX() {
+    @Column(name = "X")
+    public Double getX() {
         return x;
     }
 
     @Override
-    public double getY() {
+    @Column(name = "Y")
+    public Double getY() {
         return y;
     }
 
@@ -38,5 +41,15 @@ public class CoordenadaCartesiana implements CoordenadaBidimensional {
     @Override
     public String toString() {
         return "(x = " + x + ", y = " + y + ")";
+    }
+
+    @Override
+    public void setX(final Double x) {
+        this.x = x;
+    }
+
+    @Override
+    public void setY(final Double y) {
+        this.y = y;
     }
 }

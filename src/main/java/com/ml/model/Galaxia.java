@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +19,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Target;
+
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
+import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 import com.ml.model.posicionamiento.common.EstrategiaPosicionamiento;
@@ -24,30 +31,13 @@ import com.ml.model.posicionamiento.common.EstrategiaPosicionamiento;
 @Table(name = "GALAXIA")
 public class Galaxia {
 
-    @Id
-    @GeneratedValue
     private short id;
-
-    @OneToMany
-    @JoinColumn(name = "F_GALAXIA_ID")
-    private final List<Planeta> planetas;
-
-    @Transient
+    private List<Planeta> planetas;
     private CalculadorPosicion<?> calculadorPosicion;
-
-    @Transient
     final Map<EventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
-
-    @Embedded
-    private final CoordenadaBidimensional coordenadasSol;
-
-    @Transient
+    private CoordenadaBidimensional coordenadasSol;
     private double perimetroMaximo = Double.MIN_VALUE;
-
-    @Transient
     private int diaPeriodoMaximo = 0;
-
-    @Transient
     private int diaActual = 0;
 
     public Galaxia() {
@@ -67,6 +57,8 @@ public class Galaxia {
     /**
      * @return the id
      */
+    @Id
+    @GeneratedValue
     public final short getId() {
         return id;
     }
@@ -82,13 +74,24 @@ public class Galaxia {
     /**
      * @return the planetas
      */
+    @OneToMany(cascade = { CascadeType.ALL })
+    @JoinColumn(name = "F_GALAXIA_ID")
     public final List<Planeta> getPlanetas() {
         return planetas;
     }
 
     /**
+     * @param planetas
+     *            the planetas to set
+     */
+    protected final void setPlanetas(final List<Planeta> planetas) {
+        this.planetas = planetas;
+    }
+
+    /**
      * @return the mapEventoCantidad
      */
+    @Transient
     public final Map<EventoGalaxia, Integer> getMapEventoCantidad() {
         return mapEventoCantidad;
     }
@@ -96,13 +99,28 @@ public class Galaxia {
     /**
      * @return the coordenadasSol
      */
+    @Embedded
+    @AttributeOverrides({ //
+            @AttributeOverride(name = "x", column = @Column(name = "X_SOL")), //
+            @AttributeOverride(name = "y", column = @Column(name = "y_SOL")), //
+    })
+    @Target(CoordenadaCartesiana.class)
     public final CoordenadaBidimensional getCoordenadasSol() {
         return coordenadasSol;
     }
 
     /**
+     * @param coordenadasSol
+     *            the coordenadasSol to set
+     */
+    protected final void setCoordenadasSol(final CoordenadaBidimensional coordenadasSol) {
+        this.coordenadasSol = coordenadasSol;
+    }
+
+    /**
      * @return the perimetroMaximo
      */
+    @Transient
     public final double getPerimetroMaximo() {
         return perimetroMaximo;
     }
@@ -110,6 +128,7 @@ public class Galaxia {
     /**
      * @return the diaPeriodoMaximo
      */
+    @Transient
     public final int getDiaPeriodoMaximo() {
         return diaPeriodoMaximo;
     }
@@ -117,6 +136,7 @@ public class Galaxia {
     /**
      * @return the diaActual
      */
+    @Transient
     public final int getDiaActual() {
         return diaActual;
     }

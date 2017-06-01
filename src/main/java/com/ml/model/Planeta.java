@@ -7,26 +7,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Target;
+
+import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
 @Entity
 @Table(name = "PLANETA")
 public class Planeta {
 
-    @Id
-    @GeneratedValue
     private int id;
-
-    @Column(name = "NOMBRE")
-    private final String nombre;
-
-    @Column(name = "VELOCIDAD_ANGULAR")
-    private final short velocidadAngular;
-
-    @Column(name = "DISTANCIA_SOL")
-    private final int distanciaAlSol;
-
-    @Embedded
+    private String nombre;
+    private short velocidadAngular;
+    private int distanciaAlSol;
     private CoordenadaBidimensional posicion;
 
     public Planeta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
@@ -38,22 +31,59 @@ public class Planeta {
     }
 
     /**
+     * @return the id
+     */
+    @Id
+    @GeneratedValue
+    public final int getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     *            the id to set
+     */
+    public final void setId(final int id) {
+        this.id = id;
+    }
+
+    /**
      * @return the nombre
      */
+    @Column(name = "NOMBRE")
     public final String getNombre() {
         return nombre;
     }
 
     /**
+     * @param nombre
+     *            the nombre to set
+     */
+    protected final void setNombre(final String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
      * @return the velocidadAngular
      */
+    @Column(name = "VELOCIDAD_ANGULAR")
     public final short getVelocidadAngular() {
         return velocidadAngular;
     }
 
     /**
+     * @param velocidadAngular
+     *            the velocidadAngular to set
+     */
+    protected final void setVelocidadAngular(final short velocidadAngular) {
+        this.velocidadAngular = velocidadAngular;
+    }
+
+    /**
      * @return the posicion
      */
+    @Embedded
+    @Target(CoordenadaCartesiana.class)
     public final CoordenadaBidimensional getPosicion() {
         return posicion;
     }
@@ -69,8 +99,17 @@ public class Planeta {
     /**
      * @return the distanciaAlSol
      */
+    @Column(name = "DISTANCIA_SOL")
     public final int getDistanciaAlSol() {
         return distanciaAlSol;
+    }
+
+    /**
+     * @param distanciaAlSol
+     *            the distanciaAlSol to set
+     */
+    protected final void setDistanciaAlSol(final int distanciaAlSol) {
+        this.distanciaAlSol = distanciaAlSol;
     }
 
     public double distancia(final Planeta planeta) {

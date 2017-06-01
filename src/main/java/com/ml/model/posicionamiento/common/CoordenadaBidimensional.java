@@ -4,9 +4,13 @@ import com.ml.model.Planeta;
 
 public interface CoordenadaBidimensional {
 
-    double getX();
+    Double getX();
 
-    double getY();
+    void setX(final Double x);
+
+    Double getY();
+
+    void setY(final Double y);
 
     double distancia(final Planeta planeta);
 }
