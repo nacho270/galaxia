@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -21,8 +22,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Target;
 
-import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
+import com.ml.model.eventos.EventoGalaxia;
+import com.ml.model.eventos.TipoEventoGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
+import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 import com.ml.model.posicionamiento.common.EstrategiaPosicionamiento;
@@ -33,25 +36,24 @@ public class Galaxia {
 
     private short id;
     private List<Planeta> planetas;
+    private List<EventoGalaxia> eventos;
     private CalculadorPosicion<?> calculadorPosicion;
-    final Map<EventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
+    final Map<TipoEventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
     private CoordenadaBidimensional coordenadasSol;
     private double perimetroMaximo = Double.MIN_VALUE;
     private int diaPeriodoMaximo = 0;
     private int diaActual = 0;
 
     public Galaxia() {
-        planetas = new ArrayList<>();
-        calculadorPosicion = new CalculadorPosicionCartesiana();
-        coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
+        this(new EstrategiaCartesiana());
     }
 
     public Galaxia(final EstrategiaPosicionamiento<?, ?> estrategia) {
-        calculadorPosicion = estrategia.getCalculadorPosicion();
-        // igual en coordenadas rectangulares y polares
-        coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
         planetas = new ArrayList<>();
-        Stream.of(EventoGalaxia.values()).forEach(e -> mapEventoCantidad.put(e, 0));
+        eventos = new ArrayList<>();
+        calculadorPosicion = estrategia.getCalculadorPosicion();
+        coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
+        Stream.of(TipoEventoGalaxia.values()).forEach(e -> mapEventoCantidad.put(e, 0));
     }
 
     /**
@@ -89,10 +91,27 @@ public class Galaxia {
     }
 
     /**
+     * @return the eventos
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "F_GALAXIA_ID")
+    public final List<EventoGalaxia> getEventos() {
+        return eventos;
+    }
+
+    /**
+     * @param eventos
+     *            the eventos to set
+     */
+    public final void setEventos(final List<EventoGalaxia> eventos) {
+        this.eventos = eventos;
+    }
+
+    /**
      * @return the mapEventoCantidad
      */
     @Transient
-    public final Map<EventoGalaxia, Integer> getMapEventoCantidad() {
+    public final Map<TipoEventoGalaxia, Integer> getMapEventoCantidad() {
         return mapEventoCantidad;
     }
 
@@ -175,17 +194,19 @@ public class Galaxia {
         // Eventos:
         // 1) Alineados incluido sol
         // 2) Forman triangulo incluido sol
-        // 2.1) Determinar maximo perimetro
+        // ------ 2.1) Determinar maximo perimetro
         // 3) Alineados sin incluir sol
-        Stream.of(EventoGalaxia.values()).forEach(evento -> {
+        // 4) Dia normal
+        Stream.of(TipoEventoGalaxia.values()).forEach(evento -> {
             if (evento.aplica(this, calculadorPosicion)) {
                 evento.computar(this);
             }
         });
     }
 
-    public void sumarEvento(final EventoGalaxia periodoLluvia) {
-        mapEventoCantidad.compute(periodoLluvia, (k, v) -> v + 1);
+    public void sumarEvento(final TipoEventoGalaxia tipoEvento) {
+        mapEventoCantidad.compute(tipoEvento, (k, v) -> v + 1);
+        eventos.add(new EventoGalaxia(tipoEvento, diaActual));
     }
 
     public void computarPerimetro(final double perimetro) {

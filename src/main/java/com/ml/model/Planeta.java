@@ -22,6 +22,10 @@ public class Planeta {
     private int distanciaAlSol;
     private CoordenadaBidimensional posicion;
 
+    public Planeta() {
+
+    }
+
     public Planeta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
             final CoordenadaBidimensional posicionInicial) {
         this.nombre = nombre;
@@ -50,7 +54,7 @@ public class Planeta {
     /**
      * @return the nombre
      */
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", nullable = false)
     public final String getNombre() {
         return nombre;
     }
@@ -66,7 +70,7 @@ public class Planeta {
     /**
      * @return the velocidadAngular
      */
-    @Column(name = "VELOCIDAD_ANGULAR")
+    @Column(name = "VELOCIDAD_ANGULAR", nullable = false)
     public final short getVelocidadAngular() {
         return velocidadAngular;
     }
@@ -99,7 +103,7 @@ public class Planeta {
     /**
      * @return the distanciaAlSol
      */
-    @Column(name = "DISTANCIA_SOL")
+    @Column(name = "DISTANCIA_SOL", nullable = false)
     public final int getDistanciaAlSol() {
         return distanciaAlSol;
     }

@@ -22,13 +22,13 @@ public class CoordenadaCartesiana implements CoordenadaBidimensional {
     }
 
     @Override
-    @Column(name = "X")
+    @Column(name = "X", nullable = false)
     public Double getX() {
         return x;
     }
 
     @Override
-    @Column(name = "Y")
+    @Column(name = "Y", nullable = false)
     public Double getY() {
         return y;
     }

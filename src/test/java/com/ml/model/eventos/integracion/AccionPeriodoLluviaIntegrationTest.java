@@ -10,10 +10,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ml.model.EventoGalaxia;
 import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
 import com.ml.model.eventos.AccionPeriodoLluvia;
+import com.ml.model.eventos.TipoEventoGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
@@ -41,9 +41,9 @@ public class AccionPeriodoLluviaIntegrationTest {
         assertTrue(accionPeriodoLluvia.aplica(galaxia, new CalculadorPosicionCartesiana()));
 
         accionPeriodoLluvia.computar(galaxia);
-        assertEquals(1, galaxia.getMapEventoCantidad().get(EventoGalaxia.PERIODO_LLUVIA), 0d);
+        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.PERIODO_LLUVIA), 0d);
         accionPeriodoLluvia.computar(galaxia);
-        assertEquals(2, galaxia.getMapEventoCantidad().get(EventoGalaxia.PERIODO_LLUVIA), 0d);
+        assertEquals(2, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.PERIODO_LLUVIA), 0d);
     }
 
     @Test

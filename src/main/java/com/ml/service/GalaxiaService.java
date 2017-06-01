@@ -4,19 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ml.model.Galaxia;
+import com.ml.model.eventos.EventoGalaxia;
+import com.ml.repository.EventoGalaxiaRepository;
 import com.ml.repository.GalaxiaRepository;
 
 @Service
 public class GalaxiaService {
 
     @Autowired
-    private GalaxiaRepository gala;
+    private GalaxiaRepository galaxiaRepository;
 
-    public String hola() {
-        return "Soy el service";
+    @Autowired
+    private EventoGalaxiaRepository eventoRepository;
+
+    public void save(final Galaxia galaxia) {
+        galaxiaRepository.save(galaxia);
     }
 
-    public void crear(final Galaxia galaxia) {
-        gala.save(galaxia);
+    public EventoGalaxia eventoParaDia(final int dia) {
+        return eventoRepository.findByDia(dia);
     }
 }

@@ -2,7 +2,6 @@ package com.ml.model.eventos;
 
 import java.util.List;
 
-import com.ml.model.EventoGalaxia;
 import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
@@ -21,7 +20,7 @@ public class AccionPeriodoLluvia implements AccionEventoGalaxia {
 
     @Override
     public void computar(final Galaxia galaxia) {
-        galaxia.sumarEvento(EventoGalaxia.PERIODO_LLUVIA);
+        galaxia.sumarEvento(TipoEventoGalaxia.PERIODO_LLUVIA);
         galaxia.computarPerimetro(perimetro(galaxia));
     }
 

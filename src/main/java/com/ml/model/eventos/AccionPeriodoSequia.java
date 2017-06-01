@@ -1,6 +1,5 @@
 package com.ml.model.eventos;
 
-import com.ml.model.EventoGalaxia;
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
@@ -17,6 +16,6 @@ public class AccionPeriodoSequia implements AccionEventoGalaxia {
 
     @Override
     public void computar(final Galaxia galaxia) {
-        galaxia.sumarEvento(EventoGalaxia.PERIODO_SEQUIA);
+        galaxia.sumarEvento(TipoEventoGalaxia.PERIODO_SEQUIA);
     }
 }
