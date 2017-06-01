@@ -1,11 +1,13 @@
 package com.ml.model.eventos.integracion;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ml.model.EventoGalaxia;
 import com.ml.model.Galaxia;
 import com.ml.model.eventos.AccionCOPT;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
@@ -28,6 +30,10 @@ public class AccionCOPTIntegrationTest {
         galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, -2000, 350);
 
         assertTrue(accionCOPT.aplica(galaxia, new CalculadorPosicionCartesiana()));
+        accionCOPT.computar(galaxia);
+        assertEquals(1, galaxia.getMapEventoCantidad().get(EventoGalaxia.COPT), 0d);
+        accionCOPT.computar(galaxia);
+        assertEquals(2, galaxia.getMapEventoCantidad().get(EventoGalaxia.COPT), 0d);
     }
 
     @Test

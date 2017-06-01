@@ -1,6 +1,8 @@
 package com.ml.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,24 +11,25 @@ import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
 public class GalaxiaRectangularTest {
 
-    private final Galaxia galaxiaRecatangular = new Galaxia(new EstrategiaCartesiana());
+    private final Galaxia galaxia = spy(new Galaxia(new EstrategiaCartesiana()));
 
     @Before
     public void init() {
-        galaxiaRecatangular.getPlanetas().clear();
-        galaxiaRecatangular.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
-        galaxiaRecatangular.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
-        galaxiaRecatangular.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
+        galaxia.getPlanetas().clear();
     }
 
     @Test
     public void testUnDia() {
-        galaxiaRecatangular.simularHasta(1);
-        assertEquals(1, galaxiaRecatangular.getDiaActual());
+        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
+        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
+        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
 
-        final Planeta ferengi = galaxiaRecatangular.getPlaneta("Ferengi");
-        final Planeta betasoide = galaxiaRecatangular.getPlaneta("Betasoide");
-        final Planeta vulcano = galaxiaRecatangular.getPlaneta("Vulcano");
+        galaxia.simularHasta(1);
+        assertEquals(1, galaxia.getDiaActual());
+
+        final Planeta ferengi = galaxia.getPlaneta("Ferengi");
+        final Planeta betasoide = galaxia.getPlaneta("Betasoide");
+        final Planeta vulcano = galaxia.getPlaneta("Vulcano");
 
         assertCoordenadas(359, ferengi);
         assertCoordenadas(357, betasoide);
@@ -35,10 +38,55 @@ public class GalaxiaRectangularTest {
 
     @Test
     public void testPlanetaRecorridoHorarioMasDeUnaVuelta() {
-        galaxiaRecatangular.simularHasta(400);
-        assertEquals(400, galaxiaRecatangular.getDiaActual());
-        final Planeta ferengi = galaxiaRecatangular.getPlaneta("Ferengi");
+        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
+        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
+        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
+
+        galaxia.simularHasta(400);
+        assertEquals(400, galaxia.getDiaActual());
+        final Planeta ferengi = galaxia.getPlaneta("Ferengi");
         assertCoordenadas(320, ferengi);
+    }
+
+    @Test
+    public void testIncrementarDiaParaGenerarCOPT() {
+        doNothing().when(galaxia).actualizarPosiciones();
+
+        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, -500, 350);
+        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, -1000, 350);
+        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, -2000, 350);
+
+        galaxia.simularHasta(1);
+
+        assertEquals(1, galaxia.getMapEventoCantidad().get(EventoGalaxia.COPT), 0d);
+    }
+
+    @Test
+    public void testIncrementarDiaParaGenerarSequia() {
+        doNothing().when(galaxia).actualizarPosiciones();
+
+        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 1, 1);
+        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 2, 2);
+        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 3, 3);
+
+        galaxia.simularHasta(1);
+
+        assertEquals(1, galaxia.getMapEventoCantidad().get(EventoGalaxia.PERIODO_SEQUIA), 0d);
+    }
+
+    @Test
+    public void testIncrementarDiaParaGenerarLluvia() {
+        doNothing().when(galaxia).actualizarPosiciones();
+
+        galaxia.addPlaneta("Ferengi", (short) 1, 500, true, 0, 2);
+        galaxia.addPlaneta("Betasoide", (short) 3, 2000, true, 0, -2);
+        galaxia.addPlaneta("Vulcano", (short) 5, 1000, false, 3, 0);
+
+        galaxia.simularHasta(1);
+
+        assertEquals(1, galaxia.getMapEventoCantidad().get(EventoGalaxia.PERIODO_LLUVIA), 0d);
+        assertEquals(1, galaxia.getDiaPeriodoMaximo(), 0d);
+        assertEquals(11.21, galaxia.getPerimetroMaximo(), 1d);
     }
 
     private static void assertCoordenadas(final int angulo, final Planeta planeta) {
@@ -48,9 +96,9 @@ public class GalaxiaRectangularTest {
 
     @Test
     public void testComputarPerimetro() {
-        galaxiaRecatangular.computarPerimetro(10d);
-        galaxiaRecatangular.computarPerimetro(1d);
-        galaxiaRecatangular.computarPerimetro(20d);
-        assertEquals(20d, galaxiaRecatangular.getPerimetroMaximo(), 0d);
+        galaxia.computarPerimetro(10d);
+        galaxia.computarPerimetro(1d);
+        galaxia.computarPerimetro(20d);
+        assertEquals(20d, galaxia.getPerimetroMaximo(), 0d);
     }
 }

@@ -38,7 +38,7 @@ public class Galaxia {
     }
 
     public void addPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
-                    final int x, final int y) {
+            final int x, final int y) {
         planetas.add(new Planeta(nombre, velocidadAngular, distanciaAlSol, horaria, calculadorPosicion.crearCoordenada(x, y)));
     }
 
@@ -54,9 +54,9 @@ public class Galaxia {
         actualizarEventos();
     }
 
-    private void actualizarPosiciones() {
-        planetas.forEach(p -> p.setPosicion(
-                        calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(), p.getDistanciaAlSol())));
+    protected void actualizarPosiciones() {
+        planetas.forEach(
+                p -> p.setPosicion(calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(), p.getDistanciaAlSol())));
     }
 
     private void actualizarEventos() {
