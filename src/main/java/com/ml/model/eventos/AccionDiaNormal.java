@@ -3,15 +3,15 @@ package com.ml.model.eventos;
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
-public class AccionDiaNormal implements AccionEventoGalaxia {
+public class AccionDiaNormal extends AccionEventoGalaxia {
 
     @Override
-    public boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
+    protected boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
         return true;
     }
 
     @Override
-    public void computar(final Galaxia galaxia) {
+    protected void computar(final Galaxia galaxia) {
         galaxia.sumarEvento(TipoEventoGalaxia.NORMAL);
     }
 }

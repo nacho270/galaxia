@@ -7,10 +7,10 @@ import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 //2) Forman triangulo incluido sol
-public class AccionPeriodoLluvia implements AccionEventoGalaxia {
+public class AccionPeriodoLluvia extends AccionEventoGalaxia {
 
     @Override
-    public boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
+    protected boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
         if (!calculadorPosicion.estanAlineados(galaxia.getPlanetas())) {
             // No estan alineados, por ende se forma otra figura geometrica.
             return calculadorPosicion.distribucionPlanetasContieneSol(galaxia.getPlanetas(), galaxia.getCoordenadasSol());
@@ -19,7 +19,7 @@ public class AccionPeriodoLluvia implements AccionEventoGalaxia {
     }
 
     @Override
-    public void computar(final Galaxia galaxia) {
+    protected void computar(final Galaxia galaxia) {
         galaxia.sumarEvento(TipoEventoGalaxia.PERIODO_LLUVIA);
         galaxia.computarPerimetro(perimetro(galaxia));
     }

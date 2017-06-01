@@ -1,4 +1,4 @@
-package com.ml.model.eventos.integracion;
+package com.ml.model.eventos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

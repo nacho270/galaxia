@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import javax.persistence.AttributeOverride;
@@ -23,6 +24,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Target;
 
 import com.ml.model.eventos.EventoGalaxia;
+import com.ml.model.eventos.EventosChain;
 import com.ml.model.eventos.TipoEventoGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
@@ -38,11 +40,13 @@ public class Galaxia {
     private List<Planeta> planetas;
     private List<EventoGalaxia> eventos;
     private CalculadorPosicion<?> calculadorPosicion;
-    final Map<TipoEventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
     private CoordenadaBidimensional coordenadasSol;
+
     private double perimetroMaximo = Double.MIN_VALUE;
     private int diaPeriodoMaximo = 0;
     private int diaActual = 0;
+    private final Map<TipoEventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
+    private static final EventosChain EVENTOS_CHAIN = new EventosChain();
 
     public Galaxia() {
         this(new EstrategiaCartesiana());
@@ -53,7 +57,8 @@ public class Galaxia {
         eventos = new ArrayList<>();
         calculadorPosicion = estrategia.getCalculadorPosicion();
         coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
-        Stream.of(TipoEventoGalaxia.values()).forEach(e -> mapEventoCantidad.put(e, 0));
+        Stream.of(TipoEventoGalaxia.values()).filter(Predicate.isEqual(TipoEventoGalaxia.NORMAL).negate())
+                .forEach(e -> mapEventoCantidad.put(e, 0));
     }
 
     /**
@@ -121,7 +126,7 @@ public class Galaxia {
     @Embedded
     @AttributeOverrides({ //
             @AttributeOverride(name = "x", column = @Column(name = "X_SOL")), //
-            @AttributeOverride(name = "y", column = @Column(name = "y_SOL")), //
+            @AttributeOverride(name = "y", column = @Column(name = "Y_SOL")), //
     })
     @Target(CoordenadaCartesiana.class)
     public final CoordenadaBidimensional getCoordenadasSol() {
@@ -197,15 +202,11 @@ public class Galaxia {
         // ------ 2.1) Determinar maximo perimetro
         // 3) Alineados sin incluir sol
         // 4) Dia normal
-        Stream.of(TipoEventoGalaxia.values()).forEach(evento -> {
-            if (evento.aplica(this, calculadorPosicion)) {
-                evento.computar(this);
-            }
-        });
+        EVENTOS_CHAIN.ejecutar(this, calculadorPosicion);
     }
 
     public void sumarEvento(final TipoEventoGalaxia tipoEvento) {
-        mapEventoCantidad.compute(tipoEvento, (k, v) -> v + 1);
+        mapEventoCantidad.computeIfPresent(tipoEvento, (k, v) -> v + 1);
         eventos.add(new EventoGalaxia(tipoEvento, diaActual));
     }
 

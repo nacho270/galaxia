@@ -3,9 +3,35 @@ package com.ml.model.eventos;
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
-public interface AccionEventoGalaxia {
+public abstract class AccionEventoGalaxia {
 
-    boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion);
+    private AccionEventoGalaxia proximoHandler;
 
-    void computar(final Galaxia galaxia);
+    public void ejecutar(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
+        if (aplica(galaxia, calculadorPosicion)) {
+            computar(galaxia);
+        } else {
+            proximoHandler.ejecutar(galaxia, calculadorPosicion);
+        }
+    }
+
+    /**
+     * @return the proximoHandler
+     */
+    public final AccionEventoGalaxia getProximoHandler() {
+        return proximoHandler;
+    }
+
+    /**
+     * @param proximoHandler
+     *            the proximoHandler to set
+     */
+    public final AccionEventoGalaxia setProximoHandler(final AccionEventoGalaxia proximoHandler) {
+        this.proximoHandler = proximoHandler;
+        return this;
+    }
+
+    protected abstract boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion);
+
+    protected abstract void computar(final Galaxia galaxia);
 }
