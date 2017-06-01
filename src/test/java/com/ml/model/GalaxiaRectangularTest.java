@@ -42,8 +42,8 @@ public class GalaxiaRectangularTest {
     }
 
     private static void assertCoordenadas(final int angulo, final Planeta planeta) {
-        assertEquals(Math.cos(angulo) * planeta.getDistanciaAlSol(), planeta.getPosicion().getX(), 0d);
-        assertEquals(Math.sin(angulo) * planeta.getDistanciaAlSol(), planeta.getPosicion().getY(), 0d);
+        assertEquals((int) (Math.cos(Math.toRadians(angulo)) * planeta.getDistanciaAlSol()), planeta.getPosicion().getX(), 0d);
+        assertEquals((int) (Math.sin(Math.toRadians(angulo)) * planeta.getDistanciaAlSol()), planeta.getPosicion().getY(), 0d);
     }
 
     @Test

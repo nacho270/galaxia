@@ -22,7 +22,7 @@ public class CalculadorPosicionCartesiana implements CalculadorPosicion<Coordena
 
         // trunco a int para simplificar las coincidencias de alineacion
         return new CoordenadaCartesiana((int) (distanciaAlSol * Math.cos(Math.toRadians(angulo))),
-                        (int) (distanciaAlSol * Math.sin(Math.toRadians(angulo))));
+                (int) (distanciaAlSol * Math.sin(Math.toRadians(angulo))));
     }
 
     @Override
@@ -51,10 +51,10 @@ public class CalculadorPosicionCartesiana implements CalculadorPosicion<Coordena
     }
 
     private boolean esRecta(final CoordenadaBidimensional coordP1, final CoordenadaBidimensional coordP2,
-                    final CoordenadaBidimensional coordP3) {
+            final CoordenadaBidimensional coordP3) {
         // (y2 - y1) * (x3 - x2) = (y3 - y2) * (x2 - x1)
         return ((coordP2.getY() - coordP1.getY()) * (coordP3.getX() - coordP2.getX())) == ((coordP3.getY() - coordP2.getY())
-                        * (coordP2.getX() - coordP1.getX()));
+                * (coordP2.getX() - coordP1.getX()));
     }
 
     // private double round(double value, int places) {
@@ -69,6 +69,14 @@ public class CalculadorPosicionCartesiana implements CalculadorPosicion<Coordena
     // }
 
     /**
+     * La estrategia es tomar de a 2 puntos (planetas) de la galaxia + las coordeandas del sol y aplicar el algoritmo
+     * PNPOLY de Randolph Franklin para que cualquier forma geometrica sea soportada. Si el sol se encuentra en la misma
+     * linea del triangulo, se considera incluido.
+     *
+     * Si se quisiera restringir a triangulos, se toma de a 2 puntos (planetas) de la galaxia + las coordeandas del sol
+     * formando un triangulo y se calcula su area. Si la suma de las areas de dichos triangulos es igual a la suma del
+     * area del triangulo que forman los puntos (planetas), el sol esta contenido.
+     *
      * @see http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
      */
     @Override
@@ -86,7 +94,7 @@ public class CalculadorPosicionCartesiana implements CalculadorPosicion<Coordena
             final double coordPlanetaIX = posicionPlanetaI.getX();
             final double coordPlanetaIY = posicionPlanetaI.getY();
             final double limiteDerecho = (coordPlanetaJX - coordPlanetaIX) * (coordenadaSolY - coordPlanetaIY)
-                            / (coordPlanetaJY - coordPlanetaIY) + coordPlanetaIX;
+                    / (coordPlanetaJY - coordPlanetaIY) + coordPlanetaIX;
 
             // si el sol de encuentra dentro de la recta Y de los 2 planetas que
             // estoy tomando

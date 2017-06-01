@@ -10,7 +10,7 @@ public class AccionCOPT implements AccionEventoGalaxia {
     @Override
     public boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
         return calculadorPosicion.estanAlineados(galaxia.getPlanetas())
-                        && !calculadorPosicion.estanAlineadosConElSol(galaxia.getPlanetas(), galaxia.getCoordenadasSol());
+                && !calculadorPosicion.estanAlineadosConElSol(galaxia.getPlanetas(), galaxia.getCoordenadasSol());
     }
 
     @Override

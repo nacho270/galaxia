@@ -10,8 +10,6 @@ import java.util.List;
 import org.junit.Test;
 
 import com.ml.model.Planeta;
-import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
-import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 public class CalculadorPosicionCartesianoTest {
@@ -28,15 +26,15 @@ public class CalculadorPosicionCartesianoTest {
     @Test
     public void testAntihorario() {
         final CoordenadaCartesiana posicion = calculador.calcularPosicion(9, (short) -10, 1000);
-        assertEquals(1000 * Math.cos(270d), posicion.getX(), 0d);
-        assertEquals(1000 * Math.sin(270d), posicion.getY(), 0d);
+        assertEquals((int) (1000 * Math.cos(Math.toRadians(270d))), posicion.getX(), 0d);
+        assertEquals((int) (1000 * Math.sin(Math.toRadians(270d))), posicion.getY(), 0d);
     }
 
     @Test
     public void testHorario() {
         final CoordenadaCartesiana posicion = calculador.calcularPosicion(9, (short) 10, 1000);
-        assertEquals(1000 * Math.cos(90d), posicion.getX(), 0d);
-        assertEquals(1000 * Math.sin(90d), posicion.getY(), 0d);
+        assertEquals((int) (1000 * Math.cos(Math.toRadians(90d))), posicion.getX(), 0d);
+        assertEquals((int) (1000 * Math.sin(Math.toRadians(90d))), posicion.getY(), 0d);
     }
 
     @Test
