@@ -1,4 +1,4 @@
-package com.ml.model.eventos;
+package com.ml.model.clima;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * Modela una evento de la galaxia mediante un tipo y el dia en el que ocurrio.
+ * Modela un clima de la galaxia mediante un tipo y el dia en el que ocurrio.
  */
 @Entity
 @Table(name = "CLIMA", indexes = { @Index(name = "IX_DIA", columnList = "dia") })
@@ -19,7 +19,7 @@ public class ClimaGalaxia {
 
     @JsonIgnore
     private Integer id;
-    private TipoClimaGalaxia tipoEvento;
+    private TipoClimaGalaxia tipoClima;
     private Integer dia;
 
     /**
@@ -32,13 +32,13 @@ public class ClimaGalaxia {
     /**
      * Constructor.
      *
-     * @param tipoEvento
-     *            {@link TipoClimaGalaxia} El tipo de evento.
+     * @param tipoClima
+     *            {@link TipoClimaGalaxia} El tipo de clima.
      * @param dia
-     *            {@link Integer} El dia en el que ocurre el evento.
+     *            {@link Integer} El dia en el que ocurre el tipo de clima.
      */
-    public ClimaGalaxia(final TipoClimaGalaxia tipoEvento, final Integer dia) {
-        this.tipoEvento = tipoEvento;
+    public ClimaGalaxia(final TipoClimaGalaxia tipoClima, final Integer dia) {
+        this.tipoClima = tipoClima;
         this.dia = dia;
     }
 
@@ -60,19 +60,19 @@ public class ClimaGalaxia {
     }
 
     /**
-     * @return the tipoEvento
+     * @return the tipoClima
      */
     @Enumerated
-    public final TipoClimaGalaxia getTipoEvento() {
-        return tipoEvento;
+    public final TipoClimaGalaxia getTipoClima() {
+        return tipoClima;
     }
 
     /**
-     * @param tipoEvento
-     *            the tipoEvento to set
+     * @param tipoClima
+     *            the tipoClima to set
      */
-    public final void setTipoEvento(final TipoClimaGalaxia tipoEvento) {
-        this.tipoEvento = tipoEvento;
+    public final void setTipoClima(final TipoClimaGalaxia tipoClima) {
+        this.tipoClima = tipoClima;
     }
 
     /**

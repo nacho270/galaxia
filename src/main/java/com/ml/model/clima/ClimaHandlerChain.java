@@ -1,4 +1,4 @@
-package com.ml.model.eventos;
+package com.ml.model.clima;
 
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;

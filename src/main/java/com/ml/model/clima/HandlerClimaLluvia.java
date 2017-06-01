@@ -1,4 +1,4 @@
-package com.ml.model.eventos;
+package com.ml.model.clima;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class HandlerClimaLluvia extends HandlerClimaGalaxia {
 
     @Override
     protected void computar(final Galaxia galaxia) {
-        galaxia.sumarEvento(TipoClimaGalaxia.LLUVIA);
+        galaxia.sumarDiaConClima(TipoClimaGalaxia.LLUVIA);
         galaxia.computarPerimetro(perimetro(galaxia));
     }
 

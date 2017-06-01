@@ -1,4 +1,4 @@
-package com.ml.model.eventos;
+package com.ml.model.clima;
 
 /**
  * Enumeracion de los tipos de clima que pueden ocurrir en un determinado dia de

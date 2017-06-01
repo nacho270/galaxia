@@ -24,8 +24,8 @@ public class Main {
 
         galaxia.simularHasta(UN_ANIO * 10);
 
-        galaxia.getMapEventoCantidad().keySet().forEach(eg -> {
-            System.out.println(String.format("Hay %d dias de %s", galaxia.getMapEventoCantidad().get(eg), eg));
+        galaxia.getMapClimaCantidad().keySet().forEach(eg -> {
+            System.out.println(String.format("Hay %d dias de %s", galaxia.getMapClimaCantidad().get(eg), eg));
         });
 
         System.out.println(String.format("Pico maximo de lluvia, dia %d", galaxia.getDiaPeriodoMaximo()));

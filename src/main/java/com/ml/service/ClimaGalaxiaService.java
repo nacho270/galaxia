@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ml.model.eventos.ClimaGalaxia;
+import com.ml.model.clima.ClimaGalaxia;
 import com.ml.repository.ClimaGalaxiaRepository;
 
 /**
@@ -20,13 +20,13 @@ public class ClimaGalaxiaService {
     private ClimaGalaxiaRepository climaGalaxiaRepository;
 
     /**
-     * Obtiene el evento ocurrido en un dia en particular.
+     * Obtiene el clima que hubo en un dia en particular.
      *
      * @param dia
      *            {@link Integer} El dia requerido.
-     * @return {@link ClimaGalaxia} El evento del dia solicitado.
+     * @return {@link ClimaGalaxia} El clima del dia solicitado.
      */
-    public ClimaGalaxia eventoParaDia(final int dia) {
+    public ClimaGalaxia climaParaDia(final int dia) {
         LOGGER.info("Buscando por dia {}", dia);
         return climaGalaxiaRepository.findByDia(dia);
     }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
-import com.ml.repository.ClimaGalaxiaRepository;
+import com.ml.service.ClimaGalaxiaService;
 import com.ml.service.GalaxiaService;
 
 /**
@@ -22,13 +22,14 @@ public class PronosticoScheduler {
     private static final int UN_ANIO = 365;
 
     @Autowired
-    private GalaxiaService service;
+    private GalaxiaService galaxiaService;
 
     @Autowired
-    private ClimaGalaxiaRepository eventoRepository;
+    private ClimaGalaxiaService climaGlaxiaService;
 
     /**
-     * Realiza la carga de la galaxia pedida y simula su comportamiento climatico a 10 años. Corre solo una vez.
+     * Realiza la carga de la galaxia pedida y simula su comportamiento
+     * climatico a 10 años. Corre solo una vez.
      */
     @Scheduled(fixedDelay = Long.MAX_VALUE)
     public final void iniciarDatosYHacerPronostico() {
@@ -36,14 +37,14 @@ public class PronosticoScheduler {
         galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
         galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
         galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
-        service.save(galaxia);
+        galaxiaService.save(galaxia);
 
-        LOGGER.info("BORRANDO EVENTOS");
-        eventoRepository.deleteAll();
+        LOGGER.info("BORRANDO DATOS DEL CLIMA");
+        climaGlaxiaService.limpiarDatos();
 
         LOGGER.info("GENERANDO PRONOSTICO A 10 AÑOS");
         galaxia.simularHasta(UN_ANIO * 10);
-        service.save(galaxia);
+        galaxiaService.save(galaxia);
         LOGGER.info("PRONOSTICO GENERADO");
     }
 }

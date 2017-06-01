@@ -1,4 +1,4 @@
-package com.ml.model.eventos;
+package com.ml.model.clima;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
+import com.ml.model.clima.HandlerClimaLluvia;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;

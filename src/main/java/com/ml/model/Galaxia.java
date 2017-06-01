@@ -23,9 +23,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Target;
 
-import com.ml.model.eventos.ClimaGalaxia;
-import com.ml.model.eventos.ClimaHandlerChain;
-import com.ml.model.eventos.TipoClimaGalaxia;
+import com.ml.model.clima.ClimaGalaxia;
+import com.ml.model.clima.ClimaHandlerChain;
+import com.ml.model.clima.TipoClimaGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
@@ -33,8 +33,9 @@ import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 import com.ml.model.posicionamiento.common.EstrategiaPosicionamiento;
 
 /**
- * Almacena la configuracion de una galaxia teniendo en el punto (0,0) al sol y almacenando la cuenta de tipo de eventos,
- * y los eventos en si, durante la simulacion.
+ * Almacena la configuracion de una galaxia teniendo en el punto (0,0) al sol y
+ * almacenando la cuenta de tipo de clima, y los climas en si, durante la
+ * simulacion.
  */
 @Entity
 @Table(name = "GALAXIA")
@@ -42,15 +43,15 @@ public class Galaxia {
 
     private short id;
     private List<Planeta> planetas;
-    private List<ClimaGalaxia> eventos;
+    private List<ClimaGalaxia> climas;
     private CalculadorPosicion<?> calculadorPosicion;
     private CoordenadaBidimensional coordenadasSol;
 
     private double perimetroMaximo = Double.MIN_VALUE;
     private int diaPeriodoMaximo = 0;
     private int diaActual = 0;
-    private final Map<TipoClimaGalaxia, Integer> mapEventoCantidad = new HashMap<>();
-    private static final ClimaHandlerChain EVENTOS_CHAIN = new ClimaHandlerChain();
+    private final Map<TipoClimaGalaxia, Integer> mapClimaCantidad = new HashMap<>();
+    private static final ClimaHandlerChain CLIMA_HANDLERS_CHAIN = new ClimaHandlerChain();
 
     /**
      * Constructor.
@@ -63,15 +64,16 @@ public class Galaxia {
      * Constructor.
      *
      * @param estrategia
-     *            {@link EstrategiaPosicionamiento} La estrategia de posicionamiento a utlizar.
+     *            {@link EstrategiaPosicionamiento} La estrategia de
+     *            posicionamiento a utlizar.
      */
     public Galaxia(final EstrategiaPosicionamiento<?, ?> estrategia) {
         planetas = new ArrayList<>();
-        eventos = new ArrayList<>();
+        climas = new ArrayList<>();
         calculadorPosicion = estrategia.getCalculadorPosicion();
         coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
         Stream.of(TipoClimaGalaxia.values()).filter(Predicate.isEqual(TipoClimaGalaxia.NORMAL).negate())
-                .forEach(e -> mapEventoCantidad.put(e, 0));
+                        .forEach(e -> mapClimaCantidad.put(e, 0));
     }
 
     /**
@@ -109,28 +111,28 @@ public class Galaxia {
     }
 
     /**
-     * @return the eventos
+     * @return the climas
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     @JoinColumn(name = "F_GALAXIA_ID")
-    public final List<ClimaGalaxia> getEventos() {
-        return eventos;
+    public final List<ClimaGalaxia> getClimas() {
+        return climas;
     }
 
     /**
-     * @param eventos
-     *            the eventos to set
+     * @param climas
+     *            the climas to set
      */
-    public final void setEventos(final List<ClimaGalaxia> eventos) {
-        this.eventos = eventos;
+    public final void setClimas(final List<ClimaGalaxia> climas) {
+        this.climas = climas;
     }
 
     /**
-     * @return the mapEventoCantidad
+     * @return the mapClimaCantidad
      */
     @Transient
-    public final Map<TipoClimaGalaxia, Integer> getMapEventoCantidad() {
-        return mapEventoCantidad;
+    public final Map<TipoClimaGalaxia, Integer> getMapClimaCantidad() {
+        return mapClimaCantidad;
     }
 
     /**
@@ -138,8 +140,8 @@ public class Galaxia {
      */
     @Embedded
     @AttributeOverrides({ //
-            @AttributeOverride(name = "x", column = @Column(name = "X_SOL")), //
-            @AttributeOverride(name = "y", column = @Column(name = "Y_SOL")), //
+                    @AttributeOverride(name = "x", column = @Column(name = "X_SOL")), //
+                    @AttributeOverride(name = "y", column = @Column(name = "Y_SOL")), //
     })
     @Target(CoordenadaCartesiana.class)
     public final CoordenadaBidimensional getCoordenadasSol() {
@@ -196,19 +198,21 @@ public class Galaxia {
      * @param distanciaAlSol
      *            {@link Integer} La distancia al sol del planeta.
      * @param horaria
-     *            {@link Boolean} Si el planeta se mueve en sentido horario o no.
+     *            {@link Boolean} Si el planeta se mueve en sentido horario o
+     *            no.
      * @param x
      *            {@link Integer} Coordenada X.
      * @param y
      *            {@link Integer} Coordenada Y.
      */
     public void agregarPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
-            final int x, final int y) {
+                    final int x, final int y) {
         planetas.add(new Planeta(nombre, velocidadAngular, distanciaAlSol, horaria, calculadorPosicion.crearCoordenada(x, y)));
     }
 
     /**
-     * Simula el comportamiento de la galaxia durante un determinado numero de dias.
+     * Simula el comportamiento de la galaxia durante un determinado numero de
+     * dias.
      *
      * @param cantidadDias
      *            {@link Integer} La cantidad de dias a simular.
@@ -220,48 +224,51 @@ public class Galaxia {
     }
 
     /**
-     * Incrementa un dia en la galaxia, reubica los planetas y determina los eventos para la nueva posicion.
+     * Incrementa un dia en la galaxia, reubica los planetas y determina el
+     * clima para la nueva posicion.
      */
     private void incrementarDia() {
         diaActual++;
         actualizarPosiciones();
-        actualizarEventos();
+        actualizarClima();
     }
 
     /**
      * Reubica los planetas.
      */
     protected void actualizarPosiciones() {
-        planetas.forEach(
-                p -> p.setPosicion(calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(), p.getDistanciaAlSol())));
+        planetas.forEach(p -> p.setPosicion(
+                        calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(), p.getDistanciaAlSol())));
     }
 
     /**
-     * Determina los eventos para la nueva posicion.
+     * Determina el clima para la nueva posicion.
      */
-    private void actualizarEventos() {
-        // Eventos:
+    private void actualizarClima() {
+        // Tipos de clima:
         // 1) Alineados incluido sol
         // 2) Forman triangulo incluido sol
         // ------ 2.1) Determinar maximo perimetro
         // 3) Alineados sin incluir sol
         // 4) Dia normal
-        EVENTOS_CHAIN.ejecutar(this, calculadorPosicion);
+        CLIMA_HANDLERS_CHAIN.ejecutar(this, calculadorPosicion);
     }
 
     /**
-     * Almacena un nuevo evento ocurrido en la galaxia: Suma su ocurrencia y lo agrega a la lista de eventos.
+     * Almacena un nuevo clima ocurrido en la galaxia: Suma su ocurrencia y lo
+     * agrega a la lista de climas.
      *
-     * @param tipoEvento
-     *            {@link TipoClimaGalaxia} El tipo de evento ocurrido.
+     * @param tipoClima
+     *            {@link TipoClimaGalaxia} El tipo de clima ocurrido.
      */
-    public void sumarEvento(final TipoClimaGalaxia tipoEvento) {
-        mapEventoCantidad.computeIfPresent(tipoEvento, (k, v) -> v + 1);
-        eventos.add(new ClimaGalaxia(tipoEvento, diaActual));
+    public void sumarDiaConClima(final TipoClimaGalaxia tipoClima) {
+        mapClimaCantidad.computeIfPresent(tipoClima, (k, v) -> v + 1);
+        climas.add(new ClimaGalaxia(tipoClima, diaActual));
     }
 
     /**
-     * Guarda un nuevo perimetro si es mayor al ultimo guardado y actualiza el dia en el que ocurrio.
+     * Guarda un nuevo perimetro si es mayor al ultimo guardado y actualiza el
+     * dia en el que ocurrio.
      *
      * @param perimetro
      *            {@link Double} El perimetro a computar.

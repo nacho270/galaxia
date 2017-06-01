@@ -1,10 +1,10 @@
-package com.ml.model.eventos;
+package com.ml.model.clima;
 
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 /**
- * Handler abstracto para eventos de la galaxia.
+ * Handler abstracto para analizar el clima de la galaxia.
  */
 public abstract class HandlerClimaGalaxia {
 
@@ -28,13 +28,14 @@ public abstract class HandlerClimaGalaxia {
     }
 
     /**
-     * Lanza la cadena de handlers. Primero chequea si el handler aplica y luego lo ejecuta. Sino, ejecuta el proximo
-     * handler de la cadena.
+     * Lanza la cadena de handlers. Primero chequea si el handler aplica y luego
+     * lo ejecuta. Sino, ejecuta el proximo handler de la cadena.
      *
      * @param galaxia
      *            {@link Galaxia} La galaxia a analizar.
      * @param calculadorPosicion
-     *            {@link CalculadorPosicion} El calculador de posiciones para realizar calculos.
+     *            {@link CalculadorPosicion} El calculador de posiciones para
+     *            realizar calculos.
      */
     public void ejecutar(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
         if (aplica(galaxia, calculadorPosicion)) {
@@ -50,7 +51,8 @@ public abstract class HandlerClimaGalaxia {
      * @param galaxia
      *            {@link Galaxia} La galaxia a analizar.
      * @param calculadorPosicion
-     *            {@link CalculadorPosicion} El calculador de posiciones para realizar calculos.
+     *            {@link CalculadorPosicion} El calculador de posiciones para
+     *            realizar calculos.
      * @return {@link Boolean} Si el handler aplica.
      */
     protected abstract boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion);

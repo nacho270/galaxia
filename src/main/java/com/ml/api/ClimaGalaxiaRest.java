@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ml.model.eventos.ClimaGalaxia;
+import com.ml.model.clima.ClimaGalaxia;
 import com.ml.service.ClimaGalaxiaService;
 
 /**
@@ -18,14 +18,14 @@ public class ClimaGalaxiaRest {
     private ClimaGalaxiaService climaGalaxiaService;
 
     /**
-     * Obtiene el evento ocurrido en un dia particular.
+     * Obtiene el clima ocurrido en un dia particular.
      *
      * @param dia
      *            {@link Integer} El dia requerido.
      * @return {@link ClimaGalaxia}
      */
     @RequestMapping("/clima")
-    public final ClimaGalaxia eventoParaDia(@RequestParam final int dia) {
-        return climaGalaxiaService.eventoParaDia(dia);
+    public final ClimaGalaxia climaParaDia(@RequestParam final int dia) {
+        return climaGalaxiaService.climaParaDia(dia);
     }
 }
