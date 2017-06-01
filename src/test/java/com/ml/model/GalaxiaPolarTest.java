@@ -14,7 +14,6 @@ public class GalaxiaPolarTest {
     @Before
     public void init() {
         galaxiaPolar.getPlanetas().clear();
-        galaxiaPolar.addPlaneta("SOL", (short) 0, 0, true, 0, 0);
         galaxiaPolar.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
         galaxiaPolar.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
         galaxiaPolar.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);

@@ -16,7 +16,13 @@ public class CalculadorPosicionRectangular implements CalculadorPosicion<Coorden
         }
         // final int vueltas = distanciaRecorrida / 360;
         final int angulo = distanciaRecorrida % 360;
-        return new CoordenadaRectangular(distanciaAlSol * Math.cos(angulo), distanciaAlSol * Math.sin(angulo));
+        // return new CoordenadaRectangular(round(distanciaAlSol *
+        // Math.cos(Math.toRadians(angulo)), 2),
+        // round(distanciaAlSol * Math.sin(Math.toRadians(angulo)), 2));
+
+        // trunco a int para simplificar las coincidencias de alineacion
+        return new CoordenadaRectangular((int) (distanciaAlSol * Math.cos(Math.toRadians(angulo))),
+                        (int) (distanciaAlSol * Math.sin(Math.toRadians(angulo))));
     }
 
     @Override
@@ -37,7 +43,6 @@ public class CalculadorPosicionRectangular implements CalculadorPosicion<Coorden
 
     @Override
     public boolean estanAlineados(final List<Planeta> planetas) {
-        // (x2 - x1) / (x3 - x2) = (y2 - y1) / (y3 - y2)
         boolean esRecta = true;
         for (int i = 0; i < planetas.size() - 2 && esRecta == true; i++) {
             esRecta &= esRecta(planetas.get(i).getPosicion(), planetas.get(i + 1).getPosicion(), planetas.get(i + 2).getPosicion());
@@ -47,9 +52,21 @@ public class CalculadorPosicionRectangular implements CalculadorPosicion<Coorden
 
     private boolean esRecta(final CoordenadaBidimensional coordP1, final CoordenadaBidimensional coordP2,
                     final CoordenadaBidimensional coordP3) {
-        return (coordP2.getX() - coordP1.getX()) / (coordP3.getX() - coordP2.getX()) == (coordP2.getY() - coordP1.getY())
-                        / (coordP3.getY() - coordP2.getY());
+        // (y2 - y1) * (x3 - x2) = (y3 - y2) * (x2 - x1)
+        return ((coordP2.getY() - coordP1.getY()) * (coordP3.getX() - coordP2.getX())) == ((coordP3.getY() - coordP2.getY())
+                        * (coordP2.getX() - coordP1.getX()));
     }
+
+    // private double round(double value, int places) {
+    // if (places < 0) {
+    // throw new IllegalArgumentException();
+    // }
+    //
+    // final long factor = (long) Math.pow(10, places);
+    // value = value * factor;
+    // final long tmp = Math.round(value);
+    // return (double) tmp / factor;
+    // }
 
     /**
      * @see http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html

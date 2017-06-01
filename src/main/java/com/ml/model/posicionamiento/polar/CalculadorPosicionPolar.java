@@ -38,7 +38,4 @@ public class CalculadorPosicionPolar implements CalculadorPosicion<CoordenadaPol
     public boolean distribucionPlanetasContieneSol(List<Planeta> planetas, CoordenadaBidimensional coordenadasSol) {
         throw new UnsupportedOperationException("No implementado");
     }
-
-    // distancia polar
-    // sqrt(r1^2 + r2^2 - 2 r1 r2 cos(angulo1 - angulo2))
 }

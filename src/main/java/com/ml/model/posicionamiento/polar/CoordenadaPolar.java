@@ -1,5 +1,6 @@
 package com.ml.model.posicionamiento.polar;
 
+import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
 public class CoordenadaPolar implements CoordenadaBidimensional {
@@ -20,5 +21,12 @@ public class CoordenadaPolar implements CoordenadaBidimensional {
     @Override
     public final double getY() {
         return angulo;
+    }
+
+    @Override
+    public double distancia(Planeta planeta) {
+        // sqrt(r1^2 + r2^2 - 2 r1 r2 cos(angulo1 - angulo2))
+        return Math.sqrt(Math.pow(getX(), 2) + Math.pow(planeta.getPosicion().getX(), 2)
+                        - 2 * getX() * planeta.getPosicion().getX() * Math.cos(getY() - planeta.getPosicion().getY()));
     }
 }

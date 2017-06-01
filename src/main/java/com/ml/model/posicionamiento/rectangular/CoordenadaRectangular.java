@@ -1,5 +1,6 @@
 package com.ml.model.posicionamiento.rectangular;
 
+import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
 public class CoordenadaRectangular implements CoordenadaBidimensional {
@@ -20,5 +21,16 @@ public class CoordenadaRectangular implements CoordenadaBidimensional {
     @Override
     public double getY() {
         return y;
+    }
+
+    @Override
+    public double distancia(Planeta planeta) {
+        return Math.sqrt(Math.pow(planeta.getPosicion().getX() - this.getX(), 2)
+                        + Math.pow(planeta.getPosicion().getY() - this.getY(), 2));
+    }
+
+    @Override
+    public String toString() {
+        return "(x = " + x + ", y = " + y + ")";
     }
 }

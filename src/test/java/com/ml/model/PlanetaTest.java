@@ -19,5 +19,4 @@ public class PlanetaTest {
         final Planeta p = new Planeta("test", (short) 10, 10, false, new CoordenadaRectangular(0d, 0d));
         assertTrue(p.getVelocidadAngular() > 0);
     }
-
 }

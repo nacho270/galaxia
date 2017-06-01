@@ -15,4 +15,5 @@ public interface CalculadorPosicion<T extends CoordenadaBidimensional> {
     boolean estanAlineados(final List<Planeta> planetas);
 
     boolean distribucionPlanetasContieneSol(final List<Planeta> planetas, final CoordenadaBidimensional coordenadasSol);
+
 }

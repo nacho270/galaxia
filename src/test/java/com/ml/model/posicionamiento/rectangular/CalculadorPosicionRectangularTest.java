@@ -87,4 +87,30 @@ public class CalculadorPosicionRectangularTest {
 
         assertFalse(calculador.distribucionPlanetasContieneSol(planetas, new CoordenadaRectangular(0d, 0d)));
     }
+
+    @Test
+    public void testPlanetasAlineados() {
+        final Planeta p1 = new Planeta("P1", (short) 1, 1, true, new CoordenadaRectangular(-1d, -1d));
+        final Planeta p2 = new Planeta("P2", (short) 1, 1, true, new CoordenadaRectangular(1d, 1d));
+        final Planeta p3 = new Planeta("P3", (short) 1, 1, true, new CoordenadaRectangular(2d, 2d));
+        final List<Planeta> planetas = new ArrayList<>();
+        planetas.add(p1);
+        planetas.add(p2);
+        planetas.add(p3);
+        assertTrue(calculador.estanAlineados(planetas));
+        assertTrue(calculador.estanAlineadosConElSol(planetas, new CoordenadaRectangular(0d, 0d)));
+    }
+
+    @Test
+    public void testPlanetasNoAlineados() {
+        final Planeta p1 = new Planeta("P1", (short) 1, 1, true, new CoordenadaRectangular(0d, 2d));
+        final Planeta p2 = new Planeta("P2", (short) 1, 1, true, new CoordenadaRectangular(3d, 0d));
+        final Planeta p3 = new Planeta("P3", (short) 1, 1, true, new CoordenadaRectangular(0d, -2d));
+        final List<Planeta> planetas = new ArrayList<>();
+        planetas.add(p1);
+        planetas.add(p2);
+        planetas.add(p3);
+        assertFalse(calculador.estanAlineados(planetas));
+        assertFalse(calculador.estanAlineadosConElSol(planetas, new CoordenadaRectangular(0d, 0d)));
+    }
 }

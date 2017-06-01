@@ -19,6 +19,13 @@ public class Galaxia {
 
     private double perimetroMaximo = Double.MIN_VALUE;
 
+    /**
+     * @return the perimetroMaximo
+     */
+    protected double getPerimetroMaximo() {
+        return perimetroMaximo;
+    }
+
     private int diaPeriodoMaximo = 0;
     private int diaActual = 0;
 
@@ -30,10 +37,9 @@ public class Galaxia {
         Stream.of(EventoGalaxia.values()).forEach(e -> mapEventoCantidad.put(e, 0));
     }
 
-    public void addPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol,
-                    final boolean horaria, final int x, final int y) {
-        planetas.add(new Planeta(nombre, velocidadAngular, distanciaAlSol, horaria,
-                        calculadorPosicion.crearCoordenada(x, y)));
+    public void addPlaneta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
+                    final int x, final int y) {
+        planetas.add(new Planeta(nombre, velocidadAngular, distanciaAlSol, horaria, calculadorPosicion.crearCoordenada(x, y)));
     }
 
     public void simularHasta(final int cantidadDias) {
@@ -49,8 +55,8 @@ public class Galaxia {
     }
 
     private void actualizarPosiciones() {
-        planetas.forEach(p -> p.setPosicion(calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(),
-                        p.getDistanciaAlSol())));
+        planetas.forEach(p -> p.setPosicion(
+                        calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(), p.getDistanciaAlSol())));
     }
 
     private void actualizarEventos() {
@@ -62,20 +68,8 @@ public class Galaxia {
         Stream.of(EventoGalaxia.values()).forEach(evento -> {
             if (evento.aplica(this, calculadorPosicion)) {
                 evento.computar(this);
-                // mapEventoCantidad.compute(evento, (k, v) -> v + 1);
             }
         });
-        // if (estan los 3 alineados) {
-        // if(el sol tambien) {
-        // Evento 1
-        // } else {
-        // Evento3
-        // }
-        // } else if(incluidoSol) {
-        // Evento 2
-        // calcular permimetro, comparar con el maximo
-        // }
-
     }
 
     /**

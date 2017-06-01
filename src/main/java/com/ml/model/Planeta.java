@@ -11,7 +11,7 @@ public class Planeta {
     private CoordenadaBidimensional posicion;
 
     public Planeta(final String nombre, final short velocidadAngular, final int distanciaAlSol, final boolean horaria,
-            final CoordenadaBidimensional posicionInicial) {
+                    final CoordenadaBidimensional posicionInicial) {
         this.nombre = nombre;
         this.distanciaAlSol = distanciaAlSol;
         this.velocidadAngular = (short) ((horaria ? -1 : 1) * velocidadAngular);
@@ -52,5 +52,9 @@ public class Planeta {
      */
     public final int getDistanciaAlSol() {
         return distanciaAlSol;
+    }
+
+    public double distancia(final Planeta planeta) {
+        return this.getPosicion().distancia(planeta);
     }
 }

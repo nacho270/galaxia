@@ -14,7 +14,6 @@ public class GalaxiaRectangularTest {
     @Before
     public void init() {
         galaxiaRecatangular.getPlanetas().clear();
-        galaxiaRecatangular.addPlaneta("SOL", (short) 0, 0, true, 0, 0);
         galaxiaRecatangular.addPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
         galaxiaRecatangular.addPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
         galaxiaRecatangular.addPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
@@ -45,5 +44,13 @@ public class GalaxiaRectangularTest {
     private static void assertCoordenadas(final int angulo, final Planeta planeta) {
         assertEquals(Math.cos(angulo) * planeta.getDistanciaAlSol(), planeta.getPosicion().getX(), 0d);
         assertEquals(Math.sin(angulo) * planeta.getDistanciaAlSol(), planeta.getPosicion().getY(), 0d);
+    }
+
+    @Test
+    public void testComputarPerimetro() {
+        galaxiaRecatangular.computarPerimetro(10d);
+        galaxiaRecatangular.computarPerimetro(1d);
+        galaxiaRecatangular.computarPerimetro(20d);
+        assertEquals(20d, galaxiaRecatangular.getPerimetroMaximo(), 0d);
     }
 }

@@ -8,7 +8,7 @@ import com.ml.model.posicionamiento.common.CalculadorPosicion;
 public class AccionPeriodoSequia implements AccionEventoGalaxia {
 
     // determinar si 3 puntos son una recta => Comparacion de pendientes
-    // (x2 - x1) / (x3 - x2) ===== (y2 - y1) / (y3 - y2)
+    // (x2 - x1) / (x3 - x2) = (y2 - y1) / (y3 - y2)
 
     @Override
     public boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
