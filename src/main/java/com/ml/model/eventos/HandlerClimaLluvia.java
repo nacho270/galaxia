@@ -7,12 +7,12 @@ import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 /**
- * Handler para el evento de "Periodo de lluvia".<br>
+ * Handler para el clima de "Periodo de lluvia".<br>
  * Se ejecuta solo si los planetas no se encuentran alineados entre si y el sol se encuentra dentro del poligono formado
  * por los mismos. <br>
  * Al ejecutar, computa el perimetro del poligono actual que forma los planetas y se lo notifica a la galaxia.
  */
-public class HandlerPeriodoLluvia extends HandlerEventoGalaxia {
+public class HandlerClimaLluvia extends HandlerClimaGalaxia {
 
     @Override
     protected boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
@@ -25,7 +25,7 @@ public class HandlerPeriodoLluvia extends HandlerEventoGalaxia {
 
     @Override
     protected void computar(final Galaxia galaxia) {
-        galaxia.sumarEvento(TipoEventoGalaxia.PERIODO_LLUVIA);
+        galaxia.sumarEvento(TipoClimaGalaxia.LLUVIA);
         galaxia.computarPerimetro(perimetro(galaxia));
     }
 

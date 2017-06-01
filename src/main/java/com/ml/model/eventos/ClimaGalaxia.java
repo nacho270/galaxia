@@ -14,18 +14,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Modela una evento de la galaxia mediante un tipo y el dia en el que ocurrio.
  */
 @Entity
-@Table(name = "EVENTO", indexes = { @Index(name = "IX_DIA", columnList = "dia") })
-public class EventoGalaxia {
+@Table(name = "CLIMA", indexes = { @Index(name = "IX_DIA", columnList = "dia") })
+public class ClimaGalaxia {
 
     @JsonIgnore
     private Integer id;
-    private TipoEventoGalaxia tipoEvento;
+    private TipoClimaGalaxia tipoEvento;
     private Integer dia;
 
     /**
      * Constructor.
      */
-    public EventoGalaxia() {
+    public ClimaGalaxia() {
 
     }
 
@@ -33,11 +33,11 @@ public class EventoGalaxia {
      * Constructor.
      *
      * @param tipoEvento
-     *            {@link TipoEventoGalaxia} El tipo de evento.
+     *            {@link TipoClimaGalaxia} El tipo de evento.
      * @param dia
      *            {@link Integer} El dia en el que ocurre el evento.
      */
-    public EventoGalaxia(final TipoEventoGalaxia tipoEvento, final Integer dia) {
+    public ClimaGalaxia(final TipoClimaGalaxia tipoEvento, final Integer dia) {
         this.tipoEvento = tipoEvento;
         this.dia = dia;
     }
@@ -63,7 +63,7 @@ public class EventoGalaxia {
      * @return the tipoEvento
      */
     @Enumerated
-    public final TipoEventoGalaxia getTipoEvento() {
+    public final TipoClimaGalaxia getTipoEvento() {
         return tipoEvento;
     }
 
@@ -71,7 +71,7 @@ public class EventoGalaxia {
      * @param tipoEvento
      *            the tipoEvento to set
      */
-    public final void setTipoEvento(final TipoEventoGalaxia tipoEvento) {
+    public final void setTipoEvento(final TipoClimaGalaxia tipoEvento) {
         this.tipoEvento = tipoEvento;
     }
 

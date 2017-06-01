@@ -12,15 +12,15 @@ import org.junit.Test;
 
 import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
-import com.ml.model.eventos.HandlerPeriodoSequia;
-import com.ml.model.eventos.TipoEventoGalaxia;
+import com.ml.model.eventos.HandlerClimaSequia;
+import com.ml.model.eventos.TipoClimaGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
 public class AccionPeriodoSequiaIntegrationTest {
 
-    private final HandlerPeriodoSequia accionPeriodoSequia = new HandlerPeriodoSequia();
+    private final HandlerClimaSequia accionPeriodoSequia = new HandlerClimaSequia();
     private final Galaxia galaxia = new Galaxia(new EstrategiaCartesiana());
 
     @Before
@@ -41,9 +41,9 @@ public class AccionPeriodoSequiaIntegrationTest {
         assertTrue(accionPeriodoSequia.aplica(galaxia, new CalculadorPosicionCartesiana()));
 
         accionPeriodoSequia.computar(galaxia);
-        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.PERIODO_SEQUIA), 0d);
+        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoClimaGalaxia.SEQUIA), 0d);
         accionPeriodoSequia.computar(galaxia);
-        assertEquals(2, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.PERIODO_SEQUIA), 0d);
+        assertEquals(2, galaxia.getMapEventoCantidad().get(TipoClimaGalaxia.SEQUIA), 0d);
     }
 
     @Test

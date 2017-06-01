@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.ml.model.Galaxia;
 import com.ml.model.eventos.HandlerCOPT;
-import com.ml.model.eventos.TipoEventoGalaxia;
+import com.ml.model.eventos.TipoClimaGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
@@ -31,9 +31,9 @@ public class AccionCOPTIntegrationTest {
 
         assertTrue(accionCOPT.aplica(galaxia, new CalculadorPosicionCartesiana()));
         accionCOPT.computar(galaxia);
-        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.COPT), 0d);
+        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoClimaGalaxia.COPT), 0d);
         accionCOPT.computar(galaxia);
-        assertEquals(2, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.COPT), 0d);
+        assertEquals(2, galaxia.getMapEventoCantidad().get(TipoClimaGalaxia.COPT), 0d);
     }
 
     @Test

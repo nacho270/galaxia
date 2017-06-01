@@ -5,27 +5,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ml.model.eventos.EventoGalaxia;
-import com.ml.service.GalaxiaService;
+import com.ml.model.eventos.ClimaGalaxia;
+import com.ml.service.ClimaGalaxiaService;
 
 /**
- * Interfaz RESTful
+ * Interfaz RESTful para el clima.
  */
 @RestController
-public class GalaxiaRest {
+public class ClimaGalaxiaRest {
 
     @Autowired
-    private GalaxiaService service;
+    private ClimaGalaxiaService climaGalaxiaService;
 
     /**
      * Obtiene el evento ocurrido en un dia particular.
      *
      * @param dia
      *            {@link Integer} El dia requerido.
-     * @return {@link EventoGalaxia}
+     * @return {@link ClimaGalaxia}
      */
     @RequestMapping("/clima")
-    public final EventoGalaxia eventoParaDia(@RequestParam final int dia) {
-        return service.eventoParaDia(dia);
+    public final ClimaGalaxia eventoParaDia(@RequestParam final int dia) {
+        return climaGalaxiaService.eventoParaDia(dia);
     }
 }

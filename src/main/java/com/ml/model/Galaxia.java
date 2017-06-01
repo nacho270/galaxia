@@ -23,9 +23,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Target;
 
-import com.ml.model.eventos.EventoGalaxia;
-import com.ml.model.eventos.EventosHandlerChain;
-import com.ml.model.eventos.TipoEventoGalaxia;
+import com.ml.model.eventos.ClimaGalaxia;
+import com.ml.model.eventos.ClimaHandlerChain;
+import com.ml.model.eventos.TipoClimaGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
@@ -42,15 +42,15 @@ public class Galaxia {
 
     private short id;
     private List<Planeta> planetas;
-    private List<EventoGalaxia> eventos;
+    private List<ClimaGalaxia> eventos;
     private CalculadorPosicion<?> calculadorPosicion;
     private CoordenadaBidimensional coordenadasSol;
 
     private double perimetroMaximo = Double.MIN_VALUE;
     private int diaPeriodoMaximo = 0;
     private int diaActual = 0;
-    private final Map<TipoEventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
-    private static final EventosHandlerChain EVENTOS_CHAIN = new EventosHandlerChain();
+    private final Map<TipoClimaGalaxia, Integer> mapEventoCantidad = new HashMap<>();
+    private static final ClimaHandlerChain EVENTOS_CHAIN = new ClimaHandlerChain();
 
     /**
      * Constructor.
@@ -70,7 +70,7 @@ public class Galaxia {
         eventos = new ArrayList<>();
         calculadorPosicion = estrategia.getCalculadorPosicion();
         coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
-        Stream.of(TipoEventoGalaxia.values()).filter(Predicate.isEqual(TipoEventoGalaxia.NORMAL).negate())
+        Stream.of(TipoClimaGalaxia.values()).filter(Predicate.isEqual(TipoClimaGalaxia.NORMAL).negate())
                 .forEach(e -> mapEventoCantidad.put(e, 0));
     }
 
@@ -113,7 +113,7 @@ public class Galaxia {
      */
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     @JoinColumn(name = "F_GALAXIA_ID")
-    public final List<EventoGalaxia> getEventos() {
+    public final List<ClimaGalaxia> getEventos() {
         return eventos;
     }
 
@@ -121,7 +121,7 @@ public class Galaxia {
      * @param eventos
      *            the eventos to set
      */
-    public final void setEventos(final List<EventoGalaxia> eventos) {
+    public final void setEventos(final List<ClimaGalaxia> eventos) {
         this.eventos = eventos;
     }
 
@@ -129,7 +129,7 @@ public class Galaxia {
      * @return the mapEventoCantidad
      */
     @Transient
-    public final Map<TipoEventoGalaxia, Integer> getMapEventoCantidad() {
+    public final Map<TipoClimaGalaxia, Integer> getMapEventoCantidad() {
         return mapEventoCantidad;
     }
 
@@ -253,11 +253,11 @@ public class Galaxia {
      * Almacena un nuevo evento ocurrido en la galaxia: Suma su ocurrencia y lo agrega a la lista de eventos.
      *
      * @param tipoEvento
-     *            {@link TipoEventoGalaxia} El tipo de evento ocurrido.
+     *            {@link TipoClimaGalaxia} El tipo de evento ocurrido.
      */
-    public void sumarEvento(final TipoEventoGalaxia tipoEvento) {
+    public void sumarEvento(final TipoClimaGalaxia tipoEvento) {
         mapEventoCantidad.computeIfPresent(tipoEvento, (k, v) -> v + 1);
-        eventos.add(new EventoGalaxia(tipoEvento, diaActual));
+        eventos.add(new ClimaGalaxia(tipoEvento, diaActual));
     }
 
     /**

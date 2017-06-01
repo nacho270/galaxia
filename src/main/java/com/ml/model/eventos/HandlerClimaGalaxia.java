@@ -6,23 +6,23 @@ import com.ml.model.posicionamiento.common.CalculadorPosicion;
 /**
  * Handler abstracto para eventos de la galaxia.
  */
-public abstract class HandlerEventoGalaxia {
+public abstract class HandlerClimaGalaxia {
 
-    private HandlerEventoGalaxia proximoHandler;
+    private HandlerClimaGalaxia proximoHandler;
 
     /**
      * @return the proximoHandler
      */
-    public final HandlerEventoGalaxia getProximoHandler() {
+    public final HandlerClimaGalaxia getProximoHandler() {
         return proximoHandler;
     }
 
     /**
      * @param proximoHandler
      *            the proximoHandler to set
-     * @return {@link HandlerEventoGalaxia} Esta instancia.
+     * @return {@link HandlerClimaGalaxia} Esta instancia.
      */
-    public final HandlerEventoGalaxia setProximoHandler(final HandlerEventoGalaxia proximoHandler) {
+    public final HandlerClimaGalaxia setProximoHandler(final HandlerClimaGalaxia proximoHandler) {
         this.proximoHandler = proximoHandler;
         return this;
     }

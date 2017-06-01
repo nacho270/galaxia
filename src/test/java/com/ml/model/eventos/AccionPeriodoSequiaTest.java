@@ -17,7 +17,7 @@ import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
 public class AccionPeriodoSequiaTest {
 
-    private final HandlerPeriodoSequia accionPeriodoSequia = new HandlerPeriodoSequia();
+    private final HandlerClimaSequia accionPeriodoSequia = new HandlerClimaSequia();
     private EstrategiaCartesiana estrategiaCartesiana;
     private final CalculadorPosicionCartesiana calculadorCartesiano = mock(CalculadorPosicionCartesiana.class);
     private Galaxia galaxia;

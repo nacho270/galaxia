@@ -4,23 +4,23 @@ import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 /**
- * Modela un chain of responsibility para los {@link HandlerEventoGalaxia}.
+ * Modela un chain of responsibility para los {@link HandlerClimaGalaxia}.
  */
-public class EventosHandlerChain {
+public class ClimaHandlerChain {
 
-    private final HandlerEventoGalaxia primerHandler;
+    private final HandlerClimaGalaxia primerHandler;
 
     /**
      * Constructor. Crea el chain con el siguiente orden: <br>
-     * 1- {@link HandlerPeriodoSequia} <br>
-     * 2- {@link HandlerPeriodoLluvia} <br>
+     * 1- {@link HandlerClimaSequia} <br>
+     * 2- {@link HandlerClimaLluvia} <br>
      * 3- {@link HandlerCOPT} <br>
-     * 4- {@link HandlerDiaNormal}
+     * 4- {@link HandlerClimaNormal}
      */
-    public EventosHandlerChain() {
-        primerHandler = new HandlerPeriodoSequia();
+    public ClimaHandlerChain() {
+        primerHandler = new HandlerClimaSequia();
         primerHandler.setProximoHandler(
-                new HandlerPeriodoLluvia().setProximoHandler(new HandlerCOPT().setProximoHandler(new HandlerDiaNormal())));
+                new HandlerClimaLluvia().setProximoHandler(new HandlerCOPT().setProximoHandler(new HandlerClimaNormal())));
     }
 
     /**

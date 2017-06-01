@@ -7,7 +7,7 @@ import static org.mockito.Mockito.spy;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ml.model.eventos.TipoEventoGalaxia;
+import com.ml.model.eventos.TipoClimaGalaxia;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
 public class GalaxiaRectangularTest {
@@ -59,7 +59,7 @@ public class GalaxiaRectangularTest {
 
         galaxia.simularHasta(1);
 
-        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.COPT), 0d);
+        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoClimaGalaxia.COPT), 0d);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class GalaxiaRectangularTest {
 
         galaxia.simularHasta(1);
 
-        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.PERIODO_SEQUIA), 0d);
+        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoClimaGalaxia.SEQUIA), 0d);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class GalaxiaRectangularTest {
 
         galaxia.simularHasta(1);
 
-        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoEventoGalaxia.PERIODO_LLUVIA), 0d);
+        assertEquals(1, galaxia.getMapEventoCantidad().get(TipoClimaGalaxia.LLUVIA), 0d);
         assertEquals(1, galaxia.getDiaPeriodoMaximo(), 0d);
         assertEquals(11.21, galaxia.getPerimetroMaximo(), 1d);
     }

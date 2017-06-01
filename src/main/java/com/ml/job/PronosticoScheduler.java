@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.ml.model.Galaxia;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
-import com.ml.repository.EventoGalaxiaRepository;
+import com.ml.repository.ClimaGalaxiaRepository;
 import com.ml.service.GalaxiaService;
 
 /**
@@ -25,7 +25,7 @@ public class PronosticoScheduler {
     private GalaxiaService service;
 
     @Autowired
-    private EventoGalaxiaRepository eventoRepository;
+    private ClimaGalaxiaRepository eventoRepository;
 
     /**
      * Realiza la carga de la galaxia pedida y simula su comportamiento climatico a 10 años. Corre solo una vez.

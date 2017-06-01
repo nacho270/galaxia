@@ -7,7 +7,7 @@ import com.ml.model.posicionamiento.common.CalculadorPosicion;
  * Handler para el evento de "Periodo de sequia".<br>
  * Se ejecuta solo si los planetas se encuentran alineados entre si.
  */
-public class HandlerPeriodoSequia extends HandlerEventoGalaxia {
+public class HandlerClimaSequia extends HandlerClimaGalaxia {
 
     @Override
     protected boolean aplica(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
@@ -16,6 +16,6 @@ public class HandlerPeriodoSequia extends HandlerEventoGalaxia {
 
     @Override
     protected void computar(final Galaxia galaxia) {
-        galaxia.sumarEvento(TipoEventoGalaxia.PERIODO_SEQUIA);
+        galaxia.sumarEvento(TipoClimaGalaxia.SEQUIA);
     }
 }
