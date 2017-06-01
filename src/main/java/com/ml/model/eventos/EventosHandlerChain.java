@@ -6,7 +6,7 @@ import com.ml.model.posicionamiento.common.CalculadorPosicion;
 /**
  * Modela un chain of responsibility para los {@link HandlerEventoGalaxia}.
  */
-public class EventosChain {
+public class EventosHandlerChain {
 
     private final HandlerEventoGalaxia primerHandler;
 
@@ -17,7 +17,7 @@ public class EventosChain {
      * 3- {@link HandlerCOPT} <br>
      * 4- {@link HandlerDiaNormal}
      */
-    public EventosChain() {
+    public EventosHandlerChain() {
         primerHandler = new HandlerPeriodoSequia();
         primerHandler.setProximoHandler(
                 new HandlerPeriodoLluvia().setProximoHandler(new HandlerCOPT().setProximoHandler(new HandlerDiaNormal())));

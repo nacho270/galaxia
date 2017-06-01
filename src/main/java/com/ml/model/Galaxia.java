@@ -24,7 +24,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Target;
 
 import com.ml.model.eventos.EventoGalaxia;
-import com.ml.model.eventos.EventosChain;
+import com.ml.model.eventos.EventosHandlerChain;
 import com.ml.model.eventos.TipoEventoGalaxia;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
@@ -50,7 +50,7 @@ public class Galaxia {
     private int diaPeriodoMaximo = 0;
     private int diaActual = 0;
     private final Map<TipoEventoGalaxia, Integer> mapEventoCantidad = new HashMap<>();
-    private static final EventosChain EVENTOS_CHAIN = new EventosChain();
+    private static final EventosHandlerChain EVENTOS_CHAIN = new EventosHandlerChain();
 
     /**
      * Constructor.
