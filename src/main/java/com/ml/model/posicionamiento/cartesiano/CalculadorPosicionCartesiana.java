@@ -1,4 +1,4 @@
-package com.ml.model.posicionamiento.rectangular;
+package com.ml.model.posicionamiento.cartesiano;
 
 import java.util.List;
 
@@ -6,10 +6,10 @@ import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
-public class CalculadorPosicionRectangular implements CalculadorPosicion<CoordenadaRectangular> {
+public class CalculadorPosicionCartesiana implements CalculadorPosicion<CoordenadaCartesiana> {
 
     @Override
-    public CoordenadaRectangular calcularPosicion(final int dia, final short velocidadAngular, final int distanciaAlSol) {
+    public CoordenadaCartesiana calcularPosicion(final int dia, final short velocidadAngular, final int distanciaAlSol) {
         int distanciaRecorrida = (dia * velocidadAngular);
         if (distanciaRecorrida < 0) {
             distanciaRecorrida = 360 - Math.abs(distanciaRecorrida % 360);
@@ -21,13 +21,13 @@ public class CalculadorPosicionRectangular implements CalculadorPosicion<Coorden
         // round(distanciaAlSol * Math.sin(Math.toRadians(angulo)), 2));
 
         // trunco a int para simplificar las coincidencias de alineacion
-        return new CoordenadaRectangular((int) (distanciaAlSol * Math.cos(Math.toRadians(angulo))),
+        return new CoordenadaCartesiana((int) (distanciaAlSol * Math.cos(Math.toRadians(angulo))),
                         (int) (distanciaAlSol * Math.sin(Math.toRadians(angulo))));
     }
 
     @Override
-    public CoordenadaRectangular crearCoordenada(final int x, final int y) {
-        return new CoordenadaRectangular(x, y);
+    public CoordenadaCartesiana crearCoordenada(final int x, final int y) {
+        return new CoordenadaCartesiana(x, y);
     }
 
     @Override

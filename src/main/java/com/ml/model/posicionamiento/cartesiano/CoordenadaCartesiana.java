@@ -1,14 +1,14 @@
-package com.ml.model.posicionamiento.rectangular;
+package com.ml.model.posicionamiento.cartesiano;
 
 import com.ml.model.Planeta;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 
-public class CoordenadaRectangular implements CoordenadaBidimensional {
+public class CoordenadaCartesiana implements CoordenadaBidimensional {
 
     private final double x;
     private final double y;
 
-    public CoordenadaRectangular(final double x, final double y) {
+    public CoordenadaCartesiana(final double x, final double y) {
         this.x = x;
         this.y = y;
     }

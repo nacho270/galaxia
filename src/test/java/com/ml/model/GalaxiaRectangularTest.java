@@ -5,11 +5,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ml.model.posicionamiento.rectangular.EstrategiaRectangular;
+import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
 public class GalaxiaRectangularTest {
 
-    private final Galaxia galaxiaRecatangular = new Galaxia(new EstrategiaRectangular());
+    private final Galaxia galaxiaRecatangular = new Galaxia(new EstrategiaCartesiana());
 
     @Before
     public void init() {
