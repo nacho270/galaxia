@@ -1,15 +1,10 @@
 package com.ml.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ml.model.ClimaCantidad;
-import com.ml.model.EstadisticasClima;
 import com.ml.model.Galaxia;
 import com.ml.repository.GalaxiaRepository;
 
@@ -40,22 +35,5 @@ public class GalaxiaService {
      */
     public void limpiarDatos() {
         galaxiaRepository.deleteAll();
-    }
-
-    /**
-     * Obtiene las estadisticas del pronostico de clima hecho.
-     *
-     * @return {@link EstadisticasClima}
-     */
-    public EstadisticasClima getEstadisticas() {
-        final Galaxia galaxia = galaxiaRepository.findAll().iterator().next();
-        galaxia.getClimas().size(); // para evitar el lazy
-        final List<ClimaCantidad> climaCantidad = galaxia.getClimas().stream() //
-                        .collect(Collectors.groupingBy(clima -> clima.getClima(), Collectors.counting())) //
-                        .entrySet().stream() //
-                        .map(entry -> new ClimaCantidad(entry.getKey(), entry.getValue().intValue())) //
-                        .collect(Collectors.toList());
-
-        return new EstadisticasClima(galaxia.getDiaPicoMaximoLluvia(), climaCantidad);
     }
 }

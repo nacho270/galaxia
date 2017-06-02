@@ -1,14 +1,33 @@
 package com.ml.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ml.model.clima.TipoClimaGalaxia;
 
 /**
- * Transfer object de tipo de clima y cantidad de ocurrencias.
+ * Almacena el tipo de clima y cantidad de ocurrencias.
  */
+@Entity
+@Table(name = "CLIMA_CANTIDAD")
 public class ClimaCantidad {
 
+    @JsonIgnore
+    private Integer id;
     private TipoClimaGalaxia clima;
     private Integer cantidad;
+
+    /**
+     * Constructor.
+     */
+    public ClimaCantidad() {
+
+    }
 
     /**
      * Constructor.
@@ -24,8 +43,26 @@ public class ClimaCantidad {
     }
 
     /**
+     * @return the id
+     */
+    @Id
+    @GeneratedValue
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     *            the id to set
+     */
+    public void setId(final Integer id) {
+        this.id = id;
+    }
+
+    /**
      * @return the clima
      */
+    @Enumerated
     public TipoClimaGalaxia getClima() {
         return clima;
     }
@@ -33,6 +70,7 @@ public class ClimaCantidad {
     /**
      * @return the cantidad
      */
+    @Column(name = "CANTIDAD", nullable = false)
     public Integer getCantidad() {
         return cantidad;
     }

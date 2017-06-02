@@ -8,16 +8,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ml.model.Galaxia;
+import com.ml.model.SimuladorClima;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
 public class AccionCOPTIntegrationTest {
 
     private final HandlerCOPT accionCOPT = new HandlerCOPT();
-    private final Galaxia galaxia = new Galaxia(new EstrategiaCartesiana());
+    private final Galaxia galaxia = new Galaxia(new CalculadorPosicionCartesiana());
+    private SimuladorClima simuladorClima;
 
     @Before
     public void setup() {
+        simuladorClima = new SimuladorClima(galaxia, new EstrategiaCartesiana());
         galaxia.getPlanetas().clear();
     }
 
@@ -28,10 +31,10 @@ public class AccionCOPTIntegrationTest {
         galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, -2000, 350);
 
         assertTrue(accionCOPT.aplica(galaxia, new CalculadorPosicionCartesiana()));
-        accionCOPT.computar(galaxia);
-        assertEquals(1, galaxia.getMapClimaCantidad().get(TipoClimaGalaxia.COPT), 0d);
-        accionCOPT.computar(galaxia);
-        assertEquals(2, galaxia.getMapClimaCantidad().get(TipoClimaGalaxia.COPT), 0d);
+        accionCOPT.computar(simuladorClima);
+        assertEquals(1, simuladorClima.getMapClimaCantidad().get(TipoClimaGalaxia.COPT), 0d);
+        accionCOPT.computar(simuladorClima);
+        assertEquals(2, simuladorClima.getMapClimaCantidad().get(TipoClimaGalaxia.COPT), 0d);
     }
 
     @Test

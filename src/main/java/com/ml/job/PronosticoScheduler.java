@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.ml.model.EstadisticasClima;
 import com.ml.model.Galaxia;
+import com.ml.model.SimuladorClima;
+import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 import com.ml.service.ClimaGalaxiaService;
 import com.ml.service.GalaxiaService;
@@ -28,26 +31,27 @@ public class PronosticoScheduler {
     private ClimaGalaxiaService climaGlaxiaService;
 
     /**
-     * Realiza la carga de la galaxia pedida y simula su comportamiento
-     * climatico a 10 años. Corre solo una vez.
+     * Limpia los datos que se encuentra guardados, realiza la carga de la
+     * galaxia pedida y simula su comportamiento climatico a 10 años. Corre solo
+     * una vez.
      */
     @Scheduled(fixedDelay = Long.MAX_VALUE)
     public final void iniciarDatosYHacerPronostico() {
         LOGGER.info("BORRANDO DATOS DE GALAXIA");
         galaxiaService.limpiarDatos();
 
-        final Galaxia galaxia = new Galaxia(new EstrategiaCartesiana());
+        LOGGER.info("BORRANDO DATOS DEL CLIMA");
+        climaGlaxiaService.limpiarDatos();
+
+        final Galaxia galaxia = new Galaxia(new CalculadorPosicionCartesiana());
         galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
         galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
         galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
         galaxiaService.save(galaxia);
 
-        LOGGER.info("BORRANDO DATOS DEL CLIMA");
-        climaGlaxiaService.limpiarDatos();
-
         LOGGER.info("GENERANDO PRONOSTICO A 10 AÑOS");
-        galaxia.simularHasta(UN_ANIO * 10);
-        galaxiaService.save(galaxia);
+        final EstadisticasClima estadisticas = new SimuladorClima(galaxia, new EstrategiaCartesiana()).simularHasta(UN_ANIO * 10);
+        climaGlaxiaService.save(estadisticas);
         LOGGER.info("PRONOSTICO GENERADO");
     }
 }

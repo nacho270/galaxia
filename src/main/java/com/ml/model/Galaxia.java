@@ -1,11 +1,7 @@
 package com.ml.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -13,7 +9,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,14 +18,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Target;
 
-import com.ml.model.clima.ClimaGalaxia;
-import com.ml.model.clima.ClimaHandlerChain;
-import com.ml.model.clima.TipoClimaGalaxia;
+import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
-import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
-import com.ml.model.posicionamiento.common.EstrategiaPosicionamiento;
 
 /**
  * Almacena la configuracion de una galaxia teniendo en el punto (0,0) al sol y
@@ -43,37 +34,28 @@ public class Galaxia {
 
     private short id;
     private List<Planeta> planetas;
-    private List<ClimaGalaxia> climas;
-    private CalculadorPosicion<?> calculadorPosicion;
     private CoordenadaBidimensional coordenadasSol;
-
-    private double perimetroMaximo = Double.MIN_VALUE;
-    private Integer diaPicoMaximoLluvia = 0;
-    private int diaActual = 0;
-    private final Map<TipoClimaGalaxia, Integer> mapClimaCantidad = new HashMap<>();
-    private static final ClimaHandlerChain CLIMA_HANDLERS_CHAIN = new ClimaHandlerChain();
+    private final CalculadorPosicion<?> calculadorPosicion;
 
     /**
-     * Constructor.
+     * Constructor. Utiliza un {@link CalculadorPosicionCartesiana} por defecto.
      */
     public Galaxia() {
-        this(new EstrategiaCartesiana());
+        calculadorPosicion = new CalculadorPosicionCartesiana();
+        planetas = new ArrayList<>();
     }
 
     /**
      * Constructor.
      *
-     * @param estrategia
-     *            {@link EstrategiaPosicionamiento} La estrategia de
-     *            posicionamiento a utlizar.
+     * @param calculadorPosicion
+     *            {@link CalculadorPosicion} El calculador de posicion para
+     *            posicionar al sol.
      */
-    public Galaxia(final EstrategiaPosicionamiento<?, ?> estrategia) {
+    public Galaxia(final CalculadorPosicion<?> calculadorPosicion) {
         planetas = new ArrayList<>();
-        climas = new ArrayList<>();
-        calculadorPosicion = estrategia.getCalculadorPosicion();
         coordenadasSol = calculadorPosicion.crearCoordenada(0, 0);
-        Stream.of(TipoClimaGalaxia.values()).filter(Predicate.isEqual(TipoClimaGalaxia.NORMAL).negate())
-                        .forEach(e -> mapClimaCantidad.put(e, 0));
+        this.calculadorPosicion = calculadorPosicion;
     }
 
     /**
@@ -111,31 +93,6 @@ public class Galaxia {
     }
 
     /**
-     * @return the climas
-     */
-    @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-    @JoinColumn(name = "F_GALAXIA_ID")
-    public final List<ClimaGalaxia> getClimas() {
-        return climas;
-    }
-
-    /**
-     * @param climas
-     *            the climas to set
-     */
-    public final void setClimas(final List<ClimaGalaxia> climas) {
-        this.climas = climas;
-    }
-
-    /**
-     * @return the mapClimaCantidad
-     */
-    @Transient
-    public final Map<TipoClimaGalaxia, Integer> getMapClimaCantidad() {
-        return mapClimaCantidad;
-    }
-
-    /**
      * @return the coordenadasSol
      */
     @Embedded
@@ -154,46 +111,6 @@ public class Galaxia {
      */
     protected final void setCoordenadasSol(final CoordenadaBidimensional coordenadasSol) {
         this.coordenadasSol = coordenadasSol;
-    }
-
-    /**
-     * @return the perimetroMaximo
-     */
-    @Transient
-    public final double getPerimetroMaximo() {
-        return perimetroMaximo;
-    }
-
-    /**
-     * @return the diaPicoMaximoLluvia
-     */
-    @Column(name = "DIA_PICO_MAX_LLUVIA")
-    public final Integer getDiaPicoMaximoLluvia() {
-        return diaPicoMaximoLluvia;
-    }
-
-    /**
-     * @param diaPicoMaximoLluvia
-     *            the diaPicoMaximoLluvia to set
-     */
-    protected void setDiaPicoMaximoLluvia(final Integer diaPicoMaximoLluvia) {
-        this.diaPicoMaximoLluvia = diaPicoMaximoLluvia;
-    }
-
-    /**
-     * @return the diaActual
-     */
-    @Transient
-    public final int getDiaActual() {
-        return diaActual;
-    }
-
-    /**
-     * @param calculadorPosicion
-     *            the calculadorPosicion to set
-     */
-    public final void setCalculadorPosicion(final CalculadorPosicion<?> calculadorPosicion) {
-        this.calculadorPosicion = calculadorPosicion;
     }
 
     /**
@@ -219,82 +136,13 @@ public class Galaxia {
     }
 
     /**
-     * Simula el comportamiento de la galaxia durante un determinado numero de
-     * dias.
-     *
-     * @param cantidadDias
-     *            {@link Integer} La cantidad de dias a simular.
-     */
-    public void simularHasta(final int cantidadDias) {
-        for (int i = 0; i < cantidadDias; i++) {
-            incrementarDia();
-        }
-    }
-
-    /**
-     * Incrementa un dia en la galaxia, reubica los planetas y determina el
-     * clima para la nueva posicion.
-     */
-    private void incrementarDia() {
-        diaActual++;
-        actualizarPosiciones();
-        actualizarClima();
-    }
-
-    /**
-     * Reubica los planetas.
-     */
-    protected void actualizarPosiciones() {
-        planetas.forEach(p -> p.setPosicion(
-                        calculadorPosicion.calcularPosicion(diaActual, p.getVelocidadAngular(), p.getDistanciaAlSol())));
-    }
-
-    /**
-     * Determina el clima para la nueva posicion.
-     */
-    private void actualizarClima() {
-        // Tipos de clima:
-        // 1) Alineados incluido sol
-        // 2) Forman triangulo incluido sol
-        // ------ 2.1) Determinar maximo perimetro
-        // 3) Alineados sin incluir sol
-        // 4) Dia normal
-        CLIMA_HANDLERS_CHAIN.ejecutar(this, calculadorPosicion);
-    }
-
-    /**
-     * Almacena un nuevo clima ocurrido en la galaxia: Suma su ocurrencia y lo
-     * agrega a la lista de climas.
-     *
-     * @param tipoClima
-     *            {@link TipoClimaGalaxia} El tipo de clima ocurrido.
-     */
-    public void sumarDiaConClima(final TipoClimaGalaxia tipoClima) {
-        mapClimaCantidad.computeIfPresent(tipoClima, (k, v) -> v + 1);
-        climas.add(new ClimaGalaxia(tipoClima, diaActual));
-    }
-
-    /**
-     * Guarda un nuevo perimetro si es mayor al ultimo guardado y actualiza el
-     * dia en el que ocurrio.
-     *
-     * @param perimetro
-     *            {@link Double} El perimetro a computar.
-     */
-    public void computarPerimetro(final double perimetro) {
-        if (perimetro > perimetroMaximo) {
-            perimetroMaximo = perimetro;
-            diaPicoMaximoLluvia = diaActual;
-        }
-    }
-
-    /**
      * SOLO PARA TEST. Busca un planeta por nombre.
      *
      * @param nombre
      *            {@link String} El nombre del planeta a buscar.
      * @return {@link Planeta} El planeta requerido.
      */
+    @Transient
     protected Planeta getPlaneta(final String nombre) {
         for (final Planeta p : planetas) {
             if (p.getNombre().equalsIgnoreCase(nombre)) {

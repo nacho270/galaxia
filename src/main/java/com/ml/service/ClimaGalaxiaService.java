@@ -5,8 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ml.model.EstadisticasClima;
 import com.ml.model.clima.ClimaGalaxia;
 import com.ml.repository.ClimaGalaxiaRepository;
+import com.ml.repository.EstadisticasClimaRepository;
 
 /**
  * Servicio facade para acceder a los datos del clima la galaxia.<br>
@@ -20,6 +22,9 @@ public class ClimaGalaxiaService {
 
     @Autowired
     private ClimaGalaxiaRepository climaGalaxiaRepository;
+
+    @Autowired
+    private EstadisticasClimaRepository estadisticasClimaRepository;
 
     /**
      * Obtiene el clima que hubo en un dia en particular.
@@ -39,5 +44,25 @@ public class ClimaGalaxiaService {
     public void limpiarDatos() {
         LOGGER.info("Limpiando datos de clima");
         climaGalaxiaRepository.deleteAll();
+        estadisticasClimaRepository.deleteAll();
+    }
+
+    /**
+     * Obtiene las estadisticas del pronostico de clima hecho.
+     *
+     * @return {@link EstadisticasClima}
+     */
+    public EstadisticasClima getEstadisticas() {
+        return estadisticasClimaRepository.findAll().iterator().next();
+    }
+
+    /**
+     * Guarda las estadisticas en la base de datos.
+     *
+     * @param estadisticas
+     *            {@link EstadisticasClima} Las estadisticas a guardar.
+     */
+    public void save(final EstadisticasClima estadisticas) {
+        estadisticasClimaRepository.save(estadisticas);
     }
 }

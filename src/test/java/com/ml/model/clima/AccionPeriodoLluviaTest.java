@@ -16,7 +16,6 @@ import org.junit.Test;
 
 import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
-import com.ml.model.clima.HandlerClimaLluvia;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
@@ -25,15 +24,15 @@ import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 public class AccionPeriodoLluviaTest {
 
     private final HandlerClimaLluvia accionPeriodoLluvia = new HandlerClimaLluvia();
+    private final Galaxia galaxia = mock(Galaxia.class);
     private EstrategiaCartesiana estrategiaCartesiana;
-    private final CalculadorPosicionCartesiana calculadorCartesiano = mock(CalculadorPosicionCartesiana.class);
-    private Galaxia galaxia;
+    private CalculadorPosicionCartesiana calculadorCartesiano;
 
     @Before
     public void setup() {
+        calculadorCartesiano = mock(CalculadorPosicionCartesiana.class);
         estrategiaCartesiana = mock(EstrategiaCartesiana.class);
         when(estrategiaCartesiana.getCalculadorPosicion()).thenReturn(calculadorCartesiano);
-        galaxia = new Galaxia(estrategiaCartesiana);
     }
 
     @Test
@@ -61,6 +60,7 @@ public class AccionPeriodoLluviaTest {
 
     @Test
     public void testPerimetro() {
+        final Galaxia galaxiaNoMock = new Galaxia();
         final List<Planeta> planetas = new ArrayList<>();
         final Planeta p1 = new Planeta("P1", (short) 1, 1, true, new CoordenadaCartesiana(0d, 2d));
         final Planeta p2 = new Planeta("P2", (short) 1, 1, true, new CoordenadaCartesiana(0d, -2d));
@@ -68,7 +68,7 @@ public class AccionPeriodoLluviaTest {
         planetas.add(p1);
         planetas.add(p2);
         planetas.add(p3);
-        galaxia.getPlanetas().addAll(planetas);
-        assertEquals(Math.sqrt(8) * 2 + 4, accionPeriodoLluvia.perimetro(galaxia), 0d);
+        galaxiaNoMock.getPlanetas().addAll(planetas);
+        assertEquals(Math.sqrt(8) * 2 + 4, accionPeriodoLluvia.perimetro(galaxiaNoMock), 0d);
     }
 }

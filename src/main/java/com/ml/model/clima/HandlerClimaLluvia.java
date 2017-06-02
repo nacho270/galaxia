@@ -4,13 +4,15 @@ import java.util.List;
 
 import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
+import com.ml.model.SimuladorClima;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 /**
  * Handler para el clima de "Periodo de lluvia".<br>
- * Se ejecuta solo si los planetas no se encuentran alineados entre si y el sol se encuentra dentro del poligono formado
- * por los mismos. <br>
- * Al ejecutar, computa el perimetro del poligono actual que forma los planetas y se lo notifica a la galaxia.
+ * Se ejecuta solo si los planetas no se encuentran alineados entre si y el sol
+ * se encuentra dentro del poligono formado por los mismos. <br>
+ * Al ejecutar, computa el perimetro del poligono actual que forma los planetas
+ * y se lo notifica a la galaxia.
  */
 public class HandlerClimaLluvia extends HandlerClimaGalaxia {
 
@@ -24,9 +26,9 @@ public class HandlerClimaLluvia extends HandlerClimaGalaxia {
     }
 
     @Override
-    protected void computar(final Galaxia galaxia) {
-        galaxia.sumarDiaConClima(TipoClimaGalaxia.LLUVIA);
-        galaxia.computarPerimetro(perimetro(galaxia));
+    protected ClimaGalaxia computar(final SimuladorClima simulador) {
+        simulador.computarPerimetro(perimetro(simulador.getGalaxia()));
+        return simulador.sumarDiaConClima(TipoClimaGalaxia.LLUVIA);
     }
 
     /**

@@ -8,15 +8,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ml.model.clima.TipoClimaGalaxia;
+import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
-public class GalaxiaTest {
-
-    private final Galaxia galaxia = spy(new Galaxia(new EstrategiaCartesiana()));
+public class SimuladorClimaTest {
+    private SimuladorClima simuladorClima;
+    private Galaxia galaxia;
 
     @Before
     public void init() {
-        galaxia.getPlanetas().clear();
+        galaxia = new Galaxia(new CalculadorPosicionCartesiana());
+        simuladorClima = spy(new SimuladorClima(galaxia, new EstrategiaCartesiana()));
     }
 
     @Test
@@ -25,8 +27,8 @@ public class GalaxiaTest {
         galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
         galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
 
-        galaxia.simularHasta(1);
-        assertEquals(1, galaxia.getDiaActual());
+        simuladorClima.simularHasta(1);
+        assertEquals(1, simuladorClima.getDiaActual());
 
         final Planeta ferengi = galaxia.getPlaneta("Ferengi");
         final Planeta betasoide = galaxia.getPlaneta("Betasoide");
@@ -43,51 +45,51 @@ public class GalaxiaTest {
         galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);
         galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 0, 1000);
 
-        galaxia.simularHasta(400);
-        assertEquals(400, galaxia.getDiaActual());
+        simuladorClima.simularHasta(400);
+        assertEquals(400, simuladorClima.getDiaActual());
         final Planeta ferengi = galaxia.getPlaneta("Ferengi");
         assertCoordenadas(320, ferengi);
     }
 
     @Test
     public void testIncrementarDiaParaGenerarCOPT() {
-        doNothing().when(galaxia).actualizarPosiciones();
+        doNothing().when(simuladorClima).actualizarPosiciones();
 
         galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, -500, 350);
         galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, -1000, 350);
         galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, -2000, 350);
 
-        galaxia.simularHasta(1);
+        simuladorClima.simularHasta(1);
 
-        assertEquals(1, galaxia.getMapClimaCantidad().get(TipoClimaGalaxia.COPT), 0d);
+        assertEquals(1, simuladorClima.getMapClimaCantidad().get(TipoClimaGalaxia.COPT), 0d);
     }
 
     @Test
     public void testIncrementarDiaParaGenerarSequia() {
-        doNothing().when(galaxia).actualizarPosiciones();
+        doNothing().when(simuladorClima).actualizarPosiciones();
 
         galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 1, 1);
         galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 2, 2);
         galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 3, 3);
 
-        galaxia.simularHasta(1);
+        simuladorClima.simularHasta(1);
 
-        assertEquals(1, galaxia.getMapClimaCantidad().get(TipoClimaGalaxia.SEQUIA), 0d);
+        assertEquals(1, simuladorClima.getMapClimaCantidad().get(TipoClimaGalaxia.SEQUIA), 0d);
     }
 
     @Test
     public void testIncrementarDiaParaGenerarLluvia() {
-        doNothing().when(galaxia).actualizarPosiciones();
+        doNothing().when(simuladorClima).actualizarPosiciones();
 
         galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 0, 2);
         galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, -2);
         galaxia.agregarPlaneta("Vulcano", (short) 5, 1000, false, 3, 0);
 
-        galaxia.simularHasta(1);
+        simuladorClima.simularHasta(1);
 
-        assertEquals(1, galaxia.getMapClimaCantidad().get(TipoClimaGalaxia.LLUVIA), 0d);
-        assertEquals(1, galaxia.getDiaPicoMaximoLluvia(), 0d);
-        assertEquals(11.21, galaxia.getPerimetroMaximo(), 1d);
+        assertEquals(1, simuladorClima.getMapClimaCantidad().get(TipoClimaGalaxia.LLUVIA), 0d);
+        assertEquals(1, simuladorClima.getDiaPicoMaximoLluvia(), 0d);
+        assertEquals(11.21, simuladorClima.getPerimetroMaximo(), 1d);
     }
 
     private static void assertCoordenadas(final int angulo, final Planeta planeta) {
@@ -97,9 +99,9 @@ public class GalaxiaTest {
 
     @Test
     public void testComputarPerimetro() {
-        galaxia.computarPerimetro(10d);
-        galaxia.computarPerimetro(1d);
-        galaxia.computarPerimetro(20d);
-        assertEquals(20d, galaxia.getPerimetroMaximo(), 0d);
+        simuladorClima.computarPerimetro(10d);
+        simuladorClima.computarPerimetro(1d);
+        simuladorClima.computarPerimetro(20d);
+        assertEquals(20d, simuladorClima.getPerimetroMaximo(), 0d);
     }
 }

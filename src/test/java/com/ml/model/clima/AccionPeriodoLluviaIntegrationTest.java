@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.ml.model.Galaxia;
 import com.ml.model.Planeta;
+import com.ml.model.SimuladorClima;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.CoordenadaCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
@@ -19,10 +20,12 @@ import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 public class AccionPeriodoLluviaIntegrationTest {
 
     private final HandlerClimaLluvia accionPeriodoLluvia = new HandlerClimaLluvia();
-    private final Galaxia galaxia = new Galaxia(new EstrategiaCartesiana());
+    private final Galaxia galaxia = new Galaxia(new CalculadorPosicionCartesiana());
+    private SimuladorClima simuladorClima;
 
     @Before
     public void setup() {
+        simuladorClima = new SimuladorClima(galaxia, new EstrategiaCartesiana());
         galaxia.getPlanetas().clear();
     }
 
@@ -38,10 +41,10 @@ public class AccionPeriodoLluviaIntegrationTest {
         galaxia.getPlanetas().addAll(planetas);
         assertTrue(accionPeriodoLluvia.aplica(galaxia, new CalculadorPosicionCartesiana()));
 
-        accionPeriodoLluvia.computar(galaxia);
-        assertEquals(1, galaxia.getMapClimaCantidad().get(TipoClimaGalaxia.LLUVIA), 0d);
-        accionPeriodoLluvia.computar(galaxia);
-        assertEquals(2, galaxia.getMapClimaCantidad().get(TipoClimaGalaxia.LLUVIA), 0d);
+        accionPeriodoLluvia.computar(simuladorClima);
+        assertEquals(1, simuladorClima.getMapClimaCantidad().get(TipoClimaGalaxia.LLUVIA), 0d);
+        accionPeriodoLluvia.computar(simuladorClima);
+        assertEquals(2, simuladorClima.getMapClimaCantidad().get(TipoClimaGalaxia.LLUVIA), 0d);
     }
 
     @Test

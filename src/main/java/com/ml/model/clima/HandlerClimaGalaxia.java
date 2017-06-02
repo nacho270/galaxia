@@ -1,6 +1,7 @@
 package com.ml.model.clima;
 
 import com.ml.model.Galaxia;
+import com.ml.model.SimuladorClima;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 /**
@@ -31,17 +32,16 @@ public abstract class HandlerClimaGalaxia {
      * Lanza la cadena de handlers. Primero chequea si el handler aplica y luego
      * lo ejecuta. Sino, ejecuta el proximo handler de la cadena.
      *
-     * @param galaxia
-     *            {@link Galaxia} La galaxia a analizar.
-     * @param calculadorPosicion
-     *            {@link CalculadorPosicion} El calculador de posiciones para
-     *            realizar calculos.
+     * @param simulador
+     *            {@link SimuladorClima} El simulador de clima que se esta
+     *            corriendo.
+     * @return {@link ClimaGalaxia} El clima determinado por la cadena.
      */
-    public void ejecutar(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
-        if (aplica(galaxia, calculadorPosicion)) {
-            computar(galaxia);
+    public ClimaGalaxia ejecutar(final SimuladorClima simulador) {
+        if (aplica(simulador.getGalaxia(), simulador.getCalculadorPosicion())) {
+            return computar(simulador);
         } else {
-            proximoHandler.ejecutar(galaxia, calculadorPosicion);
+            return proximoHandler.ejecutar(simulador);
         }
     }
 
@@ -60,8 +60,10 @@ public abstract class HandlerClimaGalaxia {
     /**
      * Realiza acciones si el handler aplica.
      *
-     * @param galaxia
-     *            {@link Galaxia} La galaxia a analizar.
+     * @param simulador
+     *            {@link SimuladorClima} El simulador de clima que se esta
+     *            corriendo.
+     * @return {@link ClimaGalaxia} El clima determinado por la cadena.
      */
-    protected abstract void computar(final Galaxia galaxia);
+    protected abstract ClimaGalaxia computar(final SimuladorClima simulador);
 }

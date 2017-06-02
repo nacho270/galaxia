@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ml.model.Galaxia;
-import com.ml.model.clima.HandlerCOPT;
 import com.ml.model.posicionamiento.cartesiano.CalculadorPosicionCartesiana;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
@@ -19,15 +18,15 @@ import com.ml.model.posicionamiento.common.CoordenadaBidimensional;
 public class AccionCOPTTest {
 
     private final HandlerCOPT accionCOPT = new HandlerCOPT();
+    private final Galaxia galaxia = mock(Galaxia.class);
     private EstrategiaCartesiana estrategiaCartesiana;
-    private final CalculadorPosicionCartesiana calculadorCartesiano = mock(CalculadorPosicionCartesiana.class);
-    private Galaxia galaxia;
+    private CalculadorPosicionCartesiana calculadorCartesiano;
 
     @Before
     public void setup() {
+        calculadorCartesiano = mock(CalculadorPosicionCartesiana.class);
         estrategiaCartesiana = mock(EstrategiaCartesiana.class);
         when(estrategiaCartesiana.getCalculadorPosicion()).thenReturn(calculadorCartesiano);
-        galaxia = new Galaxia(estrategiaCartesiana);
     }
 
     @Test

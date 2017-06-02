@@ -1,6 +1,7 @@
 package com.ml.model.clima;
 
 import com.ml.model.Galaxia;
+import com.ml.model.SimuladorClima;
 import com.ml.model.posicionamiento.common.CalculadorPosicion;
 
 /**
@@ -18,7 +19,7 @@ public class HandlerCOPT extends HandlerClimaGalaxia {
     }
 
     @Override
-    protected void computar(final Galaxia galaxia) {
-        galaxia.sumarDiaConClima(TipoClimaGalaxia.COPT);
+    protected ClimaGalaxia computar(final SimuladorClima simulador) {
+        return simulador.sumarDiaConClima(TipoClimaGalaxia.COPT);
     }
 }

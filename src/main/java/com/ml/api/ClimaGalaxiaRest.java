@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ml.model.EstadisticasClima;
 import com.ml.model.clima.ClimaGalaxia;
 import com.ml.service.ClimaGalaxiaService;
-import com.ml.service.GalaxiaService;
 
 /**
  * Interfaz RESTful para el clima.
@@ -18,9 +17,6 @@ public class ClimaGalaxiaRest {
 
     @Autowired
     private ClimaGalaxiaService climaGalaxiaService;
-
-    @Autowired
-    private GalaxiaService galaxiaService;
 
     /**
      * Obtiene el clima ocurrido en un dia particular.
@@ -41,6 +37,6 @@ public class ClimaGalaxiaRest {
      */
     @RequestMapping("/estadisticas")
     public final EstadisticasClima estadisticas() {
-        return galaxiaService.getEstadisticas();
+        return climaGalaxiaService.getEstadisticas();
     }
 }

@@ -1,7 +1,6 @@
 package com.ml.model.clima;
 
-import com.ml.model.Galaxia;
-import com.ml.model.posicionamiento.common.CalculadorPosicion;
+import com.ml.model.SimuladorClima;
 
 /**
  * Modela un chain of responsibility para los {@link HandlerClimaGalaxia}.
@@ -20,18 +19,17 @@ public class ClimaHandlerChain {
     public ClimaHandlerChain() {
         primerHandler = new HandlerClimaSequia();
         primerHandler.setProximoHandler(
-                new HandlerClimaLluvia().setProximoHandler(new HandlerCOPT().setProximoHandler(new HandlerClimaNormal())));
+                        new HandlerClimaLluvia().setProximoHandler(new HandlerCOPT().setProximoHandler(new HandlerClimaNormal())));
     }
 
     /**
      * Lanza la cadena de ejecucion de handlers.
      *
-     * @param galaxia
-     *            {@link Galaxia} La galaxia a analizar.
-     * @param calculadorPosicion
-     *            {@link CalculadorPosicion} El calculador de posiciones para realizar los calculos.
+     * @param simulador
+     *            {@link SimuladorClima} El simulador que se esta corriendo.
+     * @return {@link ClimaGalaxia} El clima generado por la nueva posicion.
      */
-    public void ejecutar(final Galaxia galaxia, final CalculadorPosicion<?> calculadorPosicion) {
-        primerHandler.ejecutar(galaxia, calculadorPosicion);
+    public ClimaGalaxia ejecutar(final SimuladorClima simulador) {
+        return primerHandler.ejecutar(simulador);
     }
 }
