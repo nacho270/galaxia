@@ -1,9 +1,10 @@
 package com.ml.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.ml.model.clima.ClimaGalaxia;
@@ -96,10 +97,9 @@ public class SimuladorClima {
      * @return {@link EstadisticasClima} El resultado de la simulacion.
      */
     public EstadisticasClima simularHasta(final int cantidadDias) {
-        final List<ClimaGalaxia> climas = new ArrayList<>();
-        for (int i = 0; i < cantidadDias; i++) {
-            climas.add(incrementarDia());
-        }
+        final List<ClimaGalaxia> climas = IntStream.range(0, cantidadDias) //
+                        .mapToObj(i -> incrementarDia()) //
+                        .collect(Collectors.toList());
         return new EstadisticasClima(diaPicoMaximoLluvia, climas);
     }
 

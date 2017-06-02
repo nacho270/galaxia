@@ -144,11 +144,6 @@ public class Galaxia {
      */
     @Transient
     protected Planeta getPlaneta(final String nombre) {
-        for (final Planeta p : planetas) {
-            if (p.getNombre().equalsIgnoreCase(nombre)) {
-                return p;
-            }
-        }
-        return null;
+        return planetas.stream().filter(p -> p.getNombre().equalsIgnoreCase(nombre)).findFirst().orElse(null);
     }
 }
