@@ -22,6 +22,12 @@
     </properties>
 
     <dependencies>
+        <!-- DB -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
         <!-- LOGGING -->
         <dependency>
             <groupId>org.slf4j</groupId>

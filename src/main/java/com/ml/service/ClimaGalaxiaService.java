@@ -9,7 +9,9 @@ import com.ml.model.clima.ClimaGalaxia;
 import com.ml.repository.ClimaGalaxiaRepository;
 
 /**
- * Servicio facade para acceder a los datos del clima la galaxia.
+ * Servicio facade para acceder a los datos del clima la galaxia.<br>
+ * Asume una sola galaxia carga. Todos los datos de los climas registrados
+ * pertenecen a ella.
  */
 @Service
 public class ClimaGalaxiaService {
@@ -35,6 +37,7 @@ public class ClimaGalaxiaService {
      * Borra todos los registros del clima.
      */
     public void limpiarDatos() {
+        LOGGER.info("Limpiando datos de clima");
         climaGalaxiaRepository.deleteAll();
     }
 }

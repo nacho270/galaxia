@@ -19,7 +19,7 @@ public class ClimaGalaxia {
 
     @JsonIgnore
     private Integer id;
-    private TipoClimaGalaxia tipoClima;
+    private TipoClimaGalaxia clima;
     private Integer dia;
 
     /**
@@ -38,7 +38,7 @@ public class ClimaGalaxia {
      *            {@link Integer} El dia en el que ocurre el tipo de clima.
      */
     public ClimaGalaxia(final TipoClimaGalaxia tipoClima, final Integer dia) {
-        this.tipoClima = tipoClima;
+        clima = tipoClima;
         this.dia = dia;
     }
 
@@ -63,16 +63,16 @@ public class ClimaGalaxia {
      * @return the tipoClima
      */
     @Enumerated
-    public final TipoClimaGalaxia getTipoClima() {
-        return tipoClima;
+    public final TipoClimaGalaxia getClima() {
+        return clima;
     }
 
     /**
      * @param tipoClima
      *            the tipoClima to set
      */
-    public final void setTipoClima(final TipoClimaGalaxia tipoClima) {
-        this.tipoClima = tipoClima;
+    public final void setClima(final TipoClimaGalaxia tipoClima) {
+        clima = tipoClima;
     }
 
     /**
