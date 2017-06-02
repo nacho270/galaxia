@@ -48,7 +48,7 @@ public class Galaxia {
     private CoordenadaBidimensional coordenadasSol;
 
     private double perimetroMaximo = Double.MIN_VALUE;
-    private int diaPeriodoMaximo = 0;
+    private Integer diaPicoMaximoLluvia = 0;
     private int diaActual = 0;
     private final Map<TipoClimaGalaxia, Integer> mapClimaCantidad = new HashMap<>();
     private static final ClimaHandlerChain CLIMA_HANDLERS_CHAIN = new ClimaHandlerChain();
@@ -165,11 +165,19 @@ public class Galaxia {
     }
 
     /**
-     * @return the diaPeriodoMaximo
+     * @return the diaPicoMaximoLluvia
      */
-    @Transient
-    public final int getDiaPeriodoMaximo() {
-        return diaPeriodoMaximo;
+    @Column(name = "DIA_PICO_MAX_LLUVIA")
+    public final Integer getDiaPicoMaximoLluvia() {
+        return diaPicoMaximoLluvia;
+    }
+
+    /**
+     * @param diaPicoMaximoLluvia
+     *            the diaPicoMaximoLluvia to set
+     */
+    protected void setDiaPicoMaximoLluvia(final Integer diaPicoMaximoLluvia) {
+        this.diaPicoMaximoLluvia = diaPicoMaximoLluvia;
     }
 
     /**
@@ -276,7 +284,7 @@ public class Galaxia {
     public void computarPerimetro(final double perimetro) {
         if (perimetro > perimetroMaximo) {
             perimetroMaximo = perimetro;
-            diaPeriodoMaximo = diaActual;
+            diaPicoMaximoLluvia = diaActual;
         }
     }
 

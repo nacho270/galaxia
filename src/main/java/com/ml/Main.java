@@ -28,6 +28,6 @@ public class Main {
             System.out.println(String.format("Hay %d dias de %s", galaxia.getMapClimaCantidad().get(eg), eg));
         });
 
-        System.out.println(String.format("Pico maximo de lluvia, dia %d", galaxia.getDiaPeriodoMaximo()));
+        System.out.println(String.format("Pico maximo de lluvia, dia %d", galaxia.getDiaPicoMaximoLluvia()));
     }
 }

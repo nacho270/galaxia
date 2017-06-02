@@ -33,6 +33,9 @@ public class PronosticoScheduler {
      */
     @Scheduled(fixedDelay = Long.MAX_VALUE)
     public final void iniciarDatosYHacerPronostico() {
+        LOGGER.info("BORRANDO DATOS DE GALAXIA");
+        galaxiaService.limpiarDatos();
+
         final Galaxia galaxia = new Galaxia(new EstrategiaCartesiana());
         galaxia.agregarPlaneta("Ferengi", (short) 1, 500, true, 0, 500);
         galaxia.agregarPlaneta("Betasoide", (short) 3, 2000, true, 0, 2000);

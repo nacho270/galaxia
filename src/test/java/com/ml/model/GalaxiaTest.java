@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.ml.model.clima.TipoClimaGalaxia;
 import com.ml.model.posicionamiento.cartesiano.EstrategiaCartesiana;
 
-public class GalaxiaRectangularTest {
+public class GalaxiaTest {
 
     private final Galaxia galaxia = spy(new Galaxia(new EstrategiaCartesiana()));
 
@@ -86,7 +86,7 @@ public class GalaxiaRectangularTest {
         galaxia.simularHasta(1);
 
         assertEquals(1, galaxia.getMapClimaCantidad().get(TipoClimaGalaxia.LLUVIA), 0d);
-        assertEquals(1, galaxia.getDiaPeriodoMaximo(), 0d);
+        assertEquals(1, galaxia.getDiaPicoMaximoLluvia(), 0d);
         assertEquals(11.21, galaxia.getPerimetroMaximo(), 1d);
     }
 
