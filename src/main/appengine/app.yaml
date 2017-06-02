@@ -18,6 +18,12 @@ env: flex
 runtime_config:
    jdk: openjdk8
 
+health_check:
+  enable_health_check: False
+
+resources:
+  memory_gb: 4.0
+
 handlers:
 - url: /.*
   script: this field is required, but ignored
