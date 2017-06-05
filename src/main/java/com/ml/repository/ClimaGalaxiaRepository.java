@@ -16,5 +16,5 @@ public interface ClimaGalaxiaRepository extends CrudRepository<ClimaGalaxia, Int
      *            {@link Integer} El dia requerido.
      * @return {@link ClimaGalaxia} El clima del dia solicitado.
      */
-    ClimaGalaxia findByDia(final int dia);
+    ClimaGalaxia findByDia(final Integer dia);
 }

@@ -26,7 +26,7 @@ public class ClimaGalaxiaRest {
      * @return {@link ClimaGalaxia}
      */
     @RequestMapping("/clima")
-    public final ClimaGalaxia climaParaDia(@RequestParam final int dia) {
+    public final ClimaGalaxia climaParaDia(@RequestParam final Integer dia) {
         return climaGalaxiaService.climaParaDia(dia);
     }
 

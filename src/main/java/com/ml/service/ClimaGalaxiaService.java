@@ -5,13 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ml.exception.ParametroRequeridoExceptionException;
 import com.ml.model.EstadisticasClima;
 import com.ml.model.clima.ClimaGalaxia;
 import com.ml.repository.ClimaGalaxiaRepository;
 import com.ml.repository.EstadisticasClimaRepository;
 
 /**
- * Servicio facade para acceder a los datos del clima la galaxia.<br>
+ * Servicio para acceder a los datos del clima la galaxia.<br>
  * Asume una sola galaxia carga. Todos los datos de los climas registrados
  * pertenecen a ella.
  */
@@ -33,7 +34,10 @@ public class ClimaGalaxiaService {
      *            {@link Integer} El dia requerido.
      * @return {@link ClimaGalaxia} El clima del dia solicitado.
      */
-    public ClimaGalaxia climaParaDia(final int dia) {
+    public ClimaGalaxia climaParaDia(final Integer dia) {
+        if (dia == null) {
+            throw new ParametroRequeridoExceptionException("dia");
+        }
         LOGGER.info("Buscando por dia {}", dia);
         return climaGalaxiaRepository.findByDia(dia);
     }
